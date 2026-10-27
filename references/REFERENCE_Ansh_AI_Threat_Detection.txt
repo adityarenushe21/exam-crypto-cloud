@@ -1,0 +1,55 @@
+REFERENCE HANDOFF — ANSH SAHNI (AI THREAT DETECTION)
+Project: Blockchain-Based Secure Examination Paper Distribution and Audit System
+Owner of this reference: Aditya Renushe — Crypto + Cloud module
+Status: DRAFT / NOT APPROVED BY TEAM
+Last initialized: 2026-10-19
+
+WHY THIS FILE EXISTS
+Share proposed security events between Aditya's crypto/cloud module and Ansh's AI threat-detection module. Ansh can build the model using mock/sample events while Aditya builds the uploader. These are draft fields, not promises that an API is already working.
+
+EVENTS ADITYA'S MODULE MAY EMIT
+- upload_requested / upload_authorized / upload_rejected
+- encryption_completed / encryption_failed
+- object_stored / object_storage_failed
+- manifest_signature_created (do not log the signature private key or secrets)
+- signature_verification_succeeded / signature_verification_failed
+- ciphertext_digest_match / ciphertext_digest_mismatch
+- decryption_authorized / decryption_denied
+- release_time_not_reached / decryption_succeeded / decryption_failed
+- repeated failed verification or suspicious request pattern (risk interpretation belongs to the AI/access-control design)
+
+DRAFT EVENT SHAPE
+{
+  "event_id": "opaque-unique-id",
+  "event_type": "signature_verification_failed",
+  "timestamp_utc": "RFC3339 UTC timestamp",
+  "exam_id": "opaque-exam-id",
+  "actor_id": "pseudonymous user/service id if allowed",
+  "actor_role": "exam_authority|admin|release_service|unknown",
+  "result": "success|failure|denied",
+  "reason_code": "SIGNATURE_INVALID",
+  "object_ref": "opaque object/version reference",
+  "manifest_digest": "digest if safe and agreed",
+  "correlation_id": "request/trace id",
+  "schema_version": "1"
+}
+
+PRIVACY/SECURITY RULES
+- Never include question-paper plaintext, passwords, access tokens, AES keys, KEM shared secrets, private key bytes or credentials in event logs.
+- Avoid unnecessary personally identifying data. Prefer pseudonymous actor IDs and agreed role labels.
+- Use UTC timestamps in a stable format.
+- A failed cryptographic verification is a fact/event; AI decides how it contributes to risk scores.
+- AI alerts do not replace deterministic controls: invalid signatures, hash mismatches, unauthorized roles and pre-release attempts must be denied by the application regardless of any model output.
+
+WHAT IS AVAILABLE NOW
+- Only a proposed event schema and event list. No event producer, model, pipeline or working API has been implemented as of this starter-kit initialization.
+
+COORDINATION QUESTIONS
+1. Which events are useful features for Isolation Forest/other detection and which are only audit records?
+2. What minimum fields are required for Ansh's model?
+3. Which risk scores/alerts need to be returned to Aditya's service or Nayan's dashboard?
+4. How will duplicate/retried events be handled?
+5. What retention and privacy constraints apply?
+
+UPDATE RULE
+After every meaningful change in event shape, update this file and share the JSON example and compatibility note with Ansh. Label every sample as synthetic until it comes from a tested application flow.

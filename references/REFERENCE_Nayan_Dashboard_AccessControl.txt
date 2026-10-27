@@ -1,0 +1,58 @@
+REFERENCE HANDOFF — NAYAN D. PADGHAN (ALERTING, ACCESS CONTROL & DASHBOARD)
+Project: Blockchain-Based Secure Examination Paper Distribution and Audit System
+Owner of this reference: Aditya Renushe — Crypto + Cloud module
+Status: DRAFT / NOT APPROVED BY TEAM
+Last initialized: 2026-10-19
+
+WHY THIS FILE EXISTS
+Define the likely integration points between Aditya's crypto/cloud module and Nayan's access-control/administrator dashboard. Nayan can mock responses before Aditya has working endpoints. No endpoint in this file should be treated as implemented.
+
+POSSIBLE RESPONSIBILITIES AT THE BOUNDARY
+- Receive upload and verification status from Aditya's service.
+- Display object/exam reference, digest/manifest status, signature-validation result and cloud-storage status.
+- Display release workflow status (not scheduled, not yet releasable, authorized, denied, decryption succeeded/failed) without displaying secrets or question-paper content.
+- Show safe audit events and correlate them with AI alerts and blockchain transaction IDs.
+- Ensure only appropriate roles can request uploads, review audit records or request release.
+
+DRAFT API SHAPES (PROVISIONAL; AGREE BEFORE CODING AGAINST THEM)
+POST /api/papers/upload
+- Request: authenticated multipart PDF upload plus exam_id and release_time_utc metadata.
+- Response candidate: {"paper_id":"opaque-id","status":"encrypted_pending_audit","ciphertext_digest":"...","manifest_version":"1","blockchain_status":"pending"}
+
+GET /api/papers/{paper_id}/status
+- Response candidate: {"paper_id":"opaque-id","storage_status":"stored|failed","signature_status":"not_checked|valid|invalid","integrity_status":"not_checked|valid|mismatch","release_status":"scheduled|not_yet_allowed|authorized|denied|released","blockchain_status":"pending|anchored|failed"}
+
+POST /api/papers/{paper_id}/release
+- Request: authenticated/authorized release request; the server derives/validates release time from trusted persisted data, not from user input alone.
+- Response candidate: {"paper_id":"opaque-id","status":"denied|verification_failed|released","reason_code":"...","audit_event_id":"..."}
+- Plaintext PDF must not be sent to a dashboard unless the intended release policy explicitly authorizes it.
+
+SAFE FAILURE STATES TO DISPLAY
+- AUTH_REQUIRED
+- ROLE_NOT_ALLOWED
+- RELEASE_TIME_NOT_REACHED
+- SIGNATURE_INVALID
+- CIPHERTEXT_DIGEST_MISMATCH
+- DECRYPTION_AUTHENTICATION_FAILED
+- STORAGE_UNAVAILABLE
+- BLOCKCHAIN_ANCHOR_PENDING/FAILED
+- INTERNAL_ERROR (no secrets in response)
+
+SECURITY RULES
+- A frontend button hiding is not security; backend authorization must enforce every restriction.
+- Do not return private keys, shared secrets, data-encryption keys, AWS credentials, internal stack traces or PDF plaintext through status/log APIs.
+- Display timestamps in a clear timezone; API should use UTC.
+- Do not mark blockchain status “anchored” until a transaction has confirmed successfully.
+
+WHAT IS AVAILABLE NOW
+- This is an interface proposal only. There is no working API, endpoint, authentication layer or status response yet.
+
+COORDINATION QUESTIONS
+1. What roles and permission names will the team share?
+2. Which API framework and base path will be used?
+3. Does Nayan need file delivery, or only status/administrative audit views?
+4. Which status/error enums are agreed with Aditya, Harsh and Ansh?
+5. How should pending asynchronous blockchain transactions be shown?
+
+UPDATE RULE
+After Aditya implements/tests an endpoint or changes its response, update this file with the real route, request/response sample, auth assumptions and a test result. Keep draft responses clearly marked until verified.

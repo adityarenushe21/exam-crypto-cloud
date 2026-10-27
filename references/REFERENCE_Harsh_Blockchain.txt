@@ -1,0 +1,56 @@
+REFERENCE HANDOFF — HARSH KAPILE (BLOCKCHAIN INTEGRITY)
+Project: Blockchain-Based Secure Examination Paper Distribution and Audit System
+Owner of this reference: Aditya Renushe — Crypto + Cloud module
+Status: DRAFT / NOT APPROVED BY TEAM
+Last initialized: 2026-10-19
+
+WHY THIS FILE EXISTS
+A compact place to share interfaces between Aditya's crypto/cloud work and Harsh's blockchain work. This is a draft. Confirm every field with Harsh and the project guide before treating it as a contract.
+
+ADITYA'S PROPOSED CRYPTO WORKFLOW
+- ML-KEM-768: post-quantum key encapsulation/key establishment.
+- HKDF-SHA-256: derives a 32-byte AES key from the KEM shared secret.
+- AES-256-GCM: encrypts/authenticates the PDF.
+- SHA3-256: calculates a digest over a precisely defined byte sequence (proposed: encrypted file bytes; potentially a separate canonical-manifest digest).
+- ML-DSA-65: signs the canonical manifest, which binds the encrypted-file digest to exam metadata and cryptographic parameters.
+- Encrypted file/manifest are intended for private S3 storage. No exam plaintext or private keys should be written on-chain.
+
+POSSIBLE DATA TO ANCHOR (DRAFT)
+- exam_id or privacy-safe exam reference
+- ciphertext_sha3_256 digest (32 bytes / 64 hex characters)
+- manifest digest or signature verification metadata, if agreed
+- upload/access/release event type and UTC timestamp
+- storage object reference or opaque object/version ID if policy allows
+- transaction ID and schema/algorithm version
+
+IMPORTANT HASH COMPATIBILITY NOTE
+- SHA3-256 and Ethereum's keccak256 are not interchangeable. Do not label keccak256 as SHA3-256.
+- If the smart contract computes keccak256 for its own purposes, document that separately. The contract may simply store the off-chain SHA3-256 digest as bytes32 without recomputing it.
+- Confirm whether the existing contract expects SHA-256, SHA3-256, Keccak-256, or a raw bytes32 digest. Do not silently change Harsh's contract expectation.
+
+POSSIBLE EVENT/API CONTRACT (DRAFT ONLY)
+Event fields to consider: event_id, event_type, exam_id, timestamp_utc, result/status, manifest_digest, ciphertext_digest, object_version/reference, actor_role or pseudonymous actor, schema_version, correlation_id.
+
+ADITYA CAN PROVIDE (AFTER ACTUAL IMPLEMENTATION)
+- Exact canonical manifest schema and sample manifest (without secrets)
+- Exact digest algorithm and which bytes are hashed
+- Signature verification result and signer key ID/fingerprint
+- S3 object key/version and ciphertext digest
+- Sample audit event records
+
+NOT AVAILABLE YET
+- No contract/API schema is approved.
+- No actual digest, signature, S3 object key or test result exists yet.
+- No blockchain transaction has been submitted by Aditya.
+
+QUESTIONS TO CONFIRM TOGETHER
+1. Which exact digest(s) will the contract store?
+2. Will the contract store only a digest/event or also a signature/key ID?
+3. What does the current contract call “hash” and which hash function does it use?
+4. Which fields and identifiers are safe to publish on-chain?
+5. What upload, access, release and rejection events must be anchored?
+6. Who emits events and what is the agreed event/API signature?
+7. How will the contract handle duplicates, versioning and retry/failure cases?
+
+UPDATE RULE
+After every meaningful change in Aditya's cryptographic manifest or S3 interface, update this file with date, fields changed, test evidence, and whether Harsh has approved it. Keep proposed vs implemented vs team-approved separate.

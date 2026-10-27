@@ -1,0 +1,73 @@
+PROJECT SHARED CONTRACT — CRYPTO/CLOUD INTERFACES
+Project: Blockchain-Based Secure Examination Paper Distribution and Audit System using AI-Based Threat Detection
+Owner of this contract draft: Aditya Renushe
+Status: DRAFT — team approval pending
+Initial date: 2026-10-19
+
+PURPOSE
+Create one place where team interfaces and cross-module decisions are recorded. Do not treat draft fields or example APIs as final until the relevant teammate and project guide approve them.
+
+TEAM MODULE OWNERS
+- Aditya: secure upload, application-layer cryptography, cloud storage.
+- Harsh: blockchain integrity/smart contract.
+- Ansh: AI-based access behaviour/threat detection.
+- Nayan: alerting, access control and administrator dashboard.
+
+PROPOSED OPTION A
+ML-KEM-768 + HKDF-SHA-256 + AES-256-GCM + SHA3-256 + ML-DSA-65, private S3 storage, IAM, cloud monitoring and blockchain anchoring. This updates the crypto design from the existing PPT and is pending approval.
+
+ALGORITHM PURPOSES
+- ML-KEM-768: encapsulate/decapsulate shared secret; not file encryption and not signing.
+- HKDF-SHA-256: derive key material from the KEM shared secret, with per-paper salt and context separation.
+- AES-256-GCM: encrypt/authenticate file bytes. Use a fresh nonce for each encryption key and exact AAD on decrypt.
+- SHA3-256: file/manifest digest; define exact bytes hashed.
+- ML-DSA-65: signature over a deterministic canonical manifest; verify with a trusted public key.
+- S3 SSE-KMS (if configured) is a separate at-rest cloud layer; it does not replace the application's ML-KEM/AES/manifest workflow.
+
+PROPOSED DATA FLOW
+1. Validate authorized upload and exam metadata.
+2. ML-KEM-768 encapsulation to the approved recipient/release service public key.
+3. HKDF-SHA-256 derivation of a per-paper AES key from the KEM shared secret.
+4. AES-256-GCM encryption of the PDF with fresh nonce and canonical AAD.
+5. SHA3-256 digest of ciphertext; canonical manifest includes identifiers, release time, version, key IDs and crypto parameters.
+6. ML-DSA-65 signing of canonical manifest excluding its own signature field.
+7. Upload ciphertext + manifest + signature to private S3; emit a sanitized audit event and request a blockchain anchor.
+8. Before release, enforce identity/role and time; verify manifest signature and ciphertext digest; decapsulate, derive key, authenticate/decrypt; fail closed on any error.
+
+DRAFT MANIFEST FIELDS
+schema_version, manifest_version, exam_id/opaque_exam_id, release_time_utc, object_ref/object_version, kem_algorithm, mlkem_key_id, kem_ciphertext_b64, kdf_name, hkdf_salt_b64, kdf_context_version, content_encryption_algorithm, gcm_nonce_b64, aad_fields, digest_algorithm, ciphertext_sha3_256_hex, signer_key_id, signature_algorithm, signature_b64, created_at_utc.
+This list is not final. Minimize metadata and avoid exposing sensitive exam details. Signature must cover a deterministic canonical representation excluding the signature field itself. Define precisely which bytes are hashed and signed.
+
+DRAFT AUDIT EVENT FIELDS
+schema_version, event_id, event_type, timestamp_utc, exam_id/opaque reference, actor_id/pseudonymous, actor_role, result, reason_code, ciphertext_digest/manifest_digest when safe, object_version/reference, correlation_id, blockchain_tx_id when available.
+No plaintext paper, secrets, private keys, AES keys, KEM secret, credentials, or tokens in events.
+
+HASH COMPATIBILITY WARNING
+SHA3-256 is not Ethereum keccak256. If a smart contract uses keccak256 for its own calculations, document that separately. Agree on the exact bytes32 digest passed between services and contract.
+
+DRAFT API NAMES (NOT IMPLEMENTED)
+POST /api/papers/upload
+GET /api/papers/{paper_id}/status
+POST /api/papers/{paper_id}/release
+These are placeholders only. Agree routes, auth and responses with Nayan before implementation.
+
+KEY MANAGEMENT
+- Separate recipient ML-KEM key pair from ML-DSA signer key pair.
+- Public key distribution and trust anchors must be defined.
+- Never store private keys in Git, browser bundles, S3 plaintext objects or blockchain.
+- Validate exact KMS algorithm/API/region support before planning KMS-managed post-quantum keys. Do not confuse ML-KEM in a TLS connection with application-level KEM encapsulation.
+- Document local-demo key storage as a prototype limitation; plan appropriate managed/hardware-backed protection for real deployment.
+
+OPEN DECISIONS
+1. Supervisor approval of Option A.
+2. Confirm Python version and maintained crypto library APIs available on Windows.
+3. Confirm whether application-level signing uses local library keys, AWS KMS ML-DSA or another supported managed option.
+4. Confirm target AWS region and ML-KEM support at the exact application API level.
+5. Choose final manifest schema/canonicalization and key-ID policy.
+6. Agree exact hash/digest type with Harsh's existing smart contract.
+7. Agree audit-event fields with Ansh.
+8. Agree API paths/status enum/roles with Nayan.
+9. Define release authority, time source, private-key custody, rotation and recovery.
+
+CHANGE LOG
+2026-10-19: Initialized as a draft. No code, API, key, AWS resource or blockchain transaction has been implemented as part of this starter kit.
