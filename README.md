@@ -4,6 +4,11 @@ B.Tech capstone project, MIT World Peace University, Pune. Every member is respo
 
 Guide: **Shital Kakad**.
 
+## License
+
+[MIT](LICENSE) © 2026 Aditya Renushe, Harsh Kapile, Ansh Sahni, Nayan D. Padghan.
+Security issues: see [SECURITY.md](SECURITY.md).
+
 Exam papers are encrypted with **post-quantum cryptography** and can be opened only when two things
 are true: the **release time has passed**, and **3 of 5 custodians have approved on a blockchain**.
 Every action goes into a **signed, tamper-evident audit log**. An **AI threat detector** watches that
