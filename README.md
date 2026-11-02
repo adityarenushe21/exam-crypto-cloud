@@ -1,6 +1,8 @@
 # ExamVault: Secure Examination Paper Distribution and Audit System
 
-B.Tech capstone project, MIT World Peace University, Pune. Guide: **Shital Kakad**.
+B.Tech capstone project, MIT World Peace University, Pune. Every member is responsible for their module and presents it.
+
+Guide: **Shital Kakad**.
 
 Exam papers are encrypted with **post-quantum cryptography** and can be opened only when two things
 are true: the **release time has passed**, and **3 of 5 custodians have approved on a blockchain**.
@@ -580,7 +582,7 @@ Main limitations:
 
 ## 16. Team
 
-| Member | Module | Folder |
+| Member | Responsible for | Folder |
 |---|---|---|
 | Aditya Renushe | Secure upload, post-quantum encryption and cloud storage | [`aditya/`](aditya/README.md) |
 | Harsh Kapile | Blockchain integrity: smart contracts, chain gateway, ChronoSeal | [`harsh/examvault/`](harsh/examvault/README.md) |

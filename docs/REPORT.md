@@ -4,7 +4,7 @@
 MIT World Peace University, Pune · In-house project
 **Guide:** Shital Kakad
 
-| Team member | Module |
+| Team member | Responsible for |
 |---|---|
 | Aditya Renushe | Secure upload, encryption and cloud storage |
 | Harsh Kapile | Blockchain integrity (smart contracts, gateway) |
