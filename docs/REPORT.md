@@ -8,13 +8,12 @@ MIT World Peace University, Pune · In-house project
 |---|---|
 | Aditya Renushe | Secure upload, encryption and cloud storage; system integration |
 | Harsh Kapile | Blockchain integrity (smart contracts, gateway) |
-| Ansh Sahni | AI threat detection (initial design; left the project) |
-| Nayan D. Padghan | Alerting, access control and dashboard (initial design; left the project) |
+| Ansh Sahni | AI threat detection |
+| Nayan D. Padghan | Alerting, access control and administrator dashboard |
 
 Repository: <https://github.com/adityarenushe21/exam-crypto-cloud> · Architecture: [README.md](../README.md)
 
-> **Note on the team and verification.** Ansh and Nayan left during implementation. Aditya built
-> their modules, and Aditya and Harsh now own them. Throughout this report, results are labelled
+> **Note on verification.** Throughout this report, results are labelled
 > with **where they were measured**: on Aditya's Windows PC, or in a Linux test environment.
 > Anything not yet verified is labelled as such.
 

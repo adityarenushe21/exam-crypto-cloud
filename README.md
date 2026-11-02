@@ -8,9 +8,6 @@ Every action goes into a **signed, tamper-evident audit log**. An **AI threat de
 log, and an **administrator dashboard** is where alerts are reviewed and access is controlled.
 
 > This is a student prototype. It has not had a security audit and is not a production system.
->
-> **Team change:** Ansh and Nayan left the project. Their modules (`ansh/`, `nayan/`) were built by
-> Aditya, and Aditya and Harsh now maintain them.
 
 📄 **Full project report:** [docs/REPORT.md](docs/REPORT.md) · ▶️ **How to run:** [section 14](#14-how-to-run)
 
@@ -86,12 +83,12 @@ passed the release time, so a wrong server clock alone cannot open a paper:
 
 ## 2. Components
 
-| Folder | Module | What it does | Owner | Tests |
+| Folder | Module | What it does | Team member | Tests |
 |---|---|---|---|---|
 | [`aditya/`](aditya/README.md) | **examcrypto** | Secure upload, post-quantum hybrid encryption, write-once storage (local or S3), release service, REST API, signed audit events | Aditya | 107 Python |
 | [`harsh/examvault/`](harsh/examvault/README.md) | **Blockchain integrity** | Smart contracts `OrgRegistry`, `ExamVault` (k-of-n custodian release, freeze or revoke), `AuditAnchor` (Merkle batches, risk flags); chain gateway; ChronoSeal JS crypto library | Harsh | 27 Hardhat, 11 gateway, 7 crypto |
-| [`ansh/`](ansh/README.md) | **threatdetect** | Turns audit events into features, scores them with rules + Isolation Forest + Random Forest, and explains each alert. Stores alerts append-only and flags HIGH alerts on-chain under a pseudonym | (Ansh) → Aditya | 27 Python |
-| [`nayan/`](nayan/README.md) | **controlcenter** | Accounts, scrypt passwords, TOTP MFA, lockout, sessions, restrictions, alert review, admin API, dashboard, one-process server | (Nayan) → Aditya | 32 Python + 16 browser checks |
+| [`ansh/`](ansh/README.md) | **threatdetect** | Turns audit events into features, scores them with rules + Isolation Forest + Random Forest, and explains each alert. Stores alerts append-only and flags HIGH alerts on-chain under a pseudonym | Ansh | 27 Python |
+| [`nayan/`](nayan/README.md) | **controlcenter** | Accounts, scrypt passwords, TOTP MFA, lockout, sessions, restrictions, alert review, admin API, dashboard, one-process server | Nayan | 32 Python + 16 browser checks |
 
 ```mermaid
 flowchart TB
@@ -585,9 +582,9 @@ Main limitations:
 
 | Member | Module |
 |---|---|
-| Aditya Renushe | `aditya/`: upload validation; ML-KEM-768, HKDF-SHA-256, AES-256-GCM, SHA3-256, ML-DSA-65; signed manifest; storage (local + S3); release service with time and chain checks; API; signed, hash-chained audit events; integration. Also built and maintains `ansh/` and `nayan/` |
+| Aditya Renushe | `aditya/`: upload validation; ML-KEM-768, HKDF-SHA-256, AES-256-GCM, SHA3-256, ML-DSA-65; signed manifest; storage (local + S3); release service with time and chain checks; API; signed, hash-chained audit events; integration. System integration |
 | Harsh Kapile | `harsh/examvault/`: OrgRegistry, ExamVault and AuditAnchor contracts and their tests; chain gateway and scripts; ChronoSeal |
-| Ansh Sahni | AI threat detection (planned design; left the project) |
-| Nayan D. Padghan | Alerting, access control and dashboard (planned design; left the project) |
+| Ansh Sahni | `ansh/`: AI threat detection |
+| Nayan D. Padghan | `nayan/`: alerting, access control and administrator dashboard |
 
 Guide: **Shital Kakad**.

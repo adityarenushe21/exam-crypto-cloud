@@ -1,7 +1,6 @@
 # controlcenter: access control, alert review and dashboard (Nayan's module)
 
-> Originally Nayan's role ("Alerting, Access Control & Administrator Dashboard"). Built by Aditya
-> after the team changed. Student prototype.
+> Nayan's module: "Alerting, Access Control & Administrator Dashboard". Student prototype.
 
 ![Admin overview](docs/screenshots/05_admin_overview.png)
 

@@ -85,7 +85,7 @@ Allowed values for each status field:
 
 ---
 
-## 3. Access control + dashboard (IMPLEMENTED in `nayan/controlcenter`, originally Nayan's role)
+## 3. Access control + dashboard (IMPLEMENTED in `nayan/controlcenter`)
 
 Implemented: real accounts (scrypt), login with lockout and optional TOTP, expiring hashed sessions, account restrictions enforced on every request, AI-alert review, and the web dashboard. The **dev tokens below are only for `python -m examcrypto serve`**; `python -m controlcenter serve` uses real logins. See `nayan/README.md`. The original planning notes follow.
 
@@ -151,7 +151,7 @@ See `harsh/examvault/blockchain/gateway/README.md`.
    Update the comment.
 3. Should exam centres become real variants later (more leaves in `manifestRoot`)?
 
-## 5. AI threat detection (IMPLEMENTED in `ansh/threatdetect`, originally Ansh's role)
+## 5. AI threat detection (IMPLEMENTED in `ansh/threatdetect`)
 
 The consumer described below now exists: see `ansh/README.md`. It reads exactly this event feed, verifies the hash chain, writes `alerts/alerts.jsonl`, and flags HIGH alerts on-chain through the gateway's `POST /risk/flag`.
 

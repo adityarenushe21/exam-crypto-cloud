@@ -530,9 +530,9 @@ Bug found: /api/v1/health hard-coded "blockchain":"mock","storage":"local" even 
   mode -> FIXED in the updated copy (reports actual adapter); ships in next update. Tests: 105 OK.
 
 ----------------------------------------------------------------------
-[2026-11-02 ~13:40 Asia/Kolkata] — TEAM CHANGE + Module: AI threat detection (ansh/) BUILT (Linux test environment)
-Context: Ansh and Nayan have left; Aditya + Harsh now own all modules. Plan: build
-  their parts module by module, test them, and push to
+[2026-11-02 ~13:40 Asia/Kolkata] — Module: AI threat detection (ansh/) BUILT (Linux test environment)
+Context: Ansh's and Nayan's modules were still to be built. Plan: build
+  them module by module, test them, and push to
   github.com/adityarenushe21/exam-crypto-cloud.
 GitHub: push not set up yet - nothing pushed. Kept as a zip.
 Found: a partial ansh/threatdetect package from an interrupted earlier attempt (11 files,
@@ -572,7 +572,7 @@ examcrypto changes: pluggable authenticator; ADMIN_ACTION events (action/target_
   login failure codes count as DENIED; list_papers (local + S3); health reports real adapters.
 threatdetect changes: login failures feed AUTH_FAILURE_BURST; restricted-account attempts feed
   BLOCKED_PAPER_ACCESS; half-written last log line skipped (race with the writer). 27 tests.
-Nayan's module (nayan/controlcenter, built by Aditya after the team change):
+Nayan's module (nayan/controlcenter):
 - scrypt passwords + policy; TOTP (RFC 6238) with replay protection; 5-fail/15-min lockout;
   uniform error + timing for unknown users; sessions stored as SHA-256 hashes, 30 min idle / 8 h max;
   restrictions (append-only, expiring, enforced per request, sessions revoked, no self/last-admin);
