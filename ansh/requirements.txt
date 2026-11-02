@@ -1,0 +1,6 @@
+# Ansh's module: AI threat detection. Versions tested in Claude's sandbox (Linux, Python 3.13).
+# scikit-learn 1.9.1 = latest release (2026-09-10) and ships cp314 win_amd64 wheels.
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.1
+joblib==1.6.0

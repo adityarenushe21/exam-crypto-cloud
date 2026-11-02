@@ -1,0 +1,30 @@
+# --- Python ---
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# --- Secrets: NEVER commit ---
+.env
+*.env
+!.env.example
+keys/
+*.pem
+*.key
+*_private*
+secrets/
+
+# --- Plaintext/encrypted test data produced locally ---
+local_storage/
+output/
+*.bundle
+
+# --- AWS ---
+.aws/
+
+# --- Editors / OS ---
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store

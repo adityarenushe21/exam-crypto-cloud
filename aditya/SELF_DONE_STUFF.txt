@@ -1,0 +1,560 @@
+SELF_DONE_STUFF — ADITYA RENUSHE
+Project: Blockchain-Based Secure Examination Paper Distribution and Audit System using AI-Based Threat Detection
+Owner module: Secure Upload, Encryption & Cloud Storage
+Timezone for logs: Asia/Kolkata
+
+STATUS AT INITIALIZATION — 2026-10-19
+
+Implemented:
+- No project code has been implemented yet. This is intentionally a from-scratch starting point.
+- A Claude master prompt and starter documentation templates were prepared to guide implementation and teammate coordination.
+
+Confirmed project context from the current PPT:
+- Aditya Renushe: Secure Upload, Encryption & Cloud Storage.
+- Harsh Kapile: Blockchain Integrity.
+- Ansh Sahni: AI Threat Detection.
+- Nayan D. Padghan: Alerting, Access Control & Administrator Dashboard.
+- The PPT is not updated with the selected Option A cryptography design; use it as a reference for the overall system and module responsibilities only.
+
+Selected proposed design (pending supervisor/team approval):
+- ML-KEM-768 for post-quantum key encapsulation/key establishment.
+- HKDF-SHA-256 to derive an AES key from the ML-KEM shared secret with context separation.
+- AES-256-GCM for the examination file's application-layer encryption and authentication.
+- SHA3-256 for a defined file/manifest digest.
+- ML-DSA-65 for signing and verifying a canonical manifest.
+- Private AWS S3 storage, restrictive IAM, and optional/configured SSE-KMS as a separate storage layer.
+- Blockchain anchor/interface to be coordinated with Harsh.
+
+Tested:
+- No commands have been run and no tests have passed as part of this starter-kit creation.
+
+Not done yet:
+- No Python environment or source code created by this log.
+- No cryptographic keys generated.
+- No AWS resources created or changed.
+- No blockchain/API integration completed.
+- No teammate has approved the proposed data contract.
+
+NEXT ACTION:
+- In VS Code, start from Milestone 0: check the current working directory and Python version, then create/activate a project virtual environment once the actual environment is known.
+
+LOG UPDATE TEMPLATE — append a new section after every meaningful work session:
+
+[YYYY-MM-DD HH:MM Asia/Kolkata] — [Milestone / short title]
+Goal:
+Implemented (files/changes):
+Commands actually run:
+Tests run and exact results:
+Errors/blockers:
+Design decisions confirmed:
+Decisions still provisional:
+Reference files updated:
+Next exact action:
+
+----------------------------------------------------------------------
+[2026-10-19 ~14:50 Asia/Kolkata] — Milestone 0: Reconnaissance (documents only)
+Goal:
+- Read the capstone PPT and starter-kit files, summarise Aditya's role, list
+  conflicts between the PPT and the proposed Option A design, and prepare the
+  first safe PowerShell inspection commands.
+Implemented (files/changes):
+- No application code written.
+- This log entry appended. Proposed .gitignore drafted (not yet placed in a
+  real repository on Aditya's PC).
+Commands actually run:
+- Only by Claude, in Claude's cloud workspace (NOT on Aditya's PC): unzip the
+  starter kit, extract text from the PPT (python-pptx), read the .txt files.
+- Nothing has been run on Aditya's Windows PC yet.
+Tests run and exact results:
+- None. No tests exist yet.
+Findings — PPT vs Option A (conflicts to resolve, none silently changed):
+1. PPT slides 4/6/7/9 say "AES-256"; Option A specifies AES-256-GCM with a key
+   derived via ML-KEM-768 + HKDF-SHA-256. ML-KEM-768 and HKDF are absent from
+   the PPT.
+2. PPT slide 6/7/9/10 says "SHA-256"; Option A uses SHA3-256. These are
+   different algorithms (and both differ from Ethereum keccak256).
+3. PPT slide 10 assigns hash generation to Harsh ("Generates SHA-256 hashes
+   for encrypted examination papers"); Option A has Aditya's module compute
+   the SHA3-256 artifact digest and hand it to Harsh. Ownership must be agreed
+   with Harsh.
+4. PPT slide 6 lists "RSA" and generic "Digital Signatures"; Option A uses
+   ML-DSA-65 for signatures and ML-KEM-768 for key establishment instead of RSA.
+5. PPT slide 9 says "KMS-managed keys"; in Option A, KMS can only be assumed
+   for S3 server-side encryption (SSE-KMS). Whether AWS KMS supports ML-KEM
+   and/or ML-DSA at the application API level is NOT yet verified.
+6. PPT slide 7 places time-locked decryption on the smart contract; the role
+   guide states the off-chain release service must also refuse to
+   decapsulate/decrypt before release time. Both views must be reconciled.
+7. PPT slide 6 lists React/Node.js/Express/PostgreSQL; the prompt says use
+   Python for the crypto service. How it connects to a Node backend (if the
+   team uses one) is an open decision.
+Unknown (must be checked on Aditya's PC next):
+- Windows version, PowerShell version, Python version(s)/launcher, pip, Git,
+  VS Code, AWS CLI, existing project folder.
+- Whether a maintained Python library on Aditya's Python version supports
+  ML-KEM-768 and ML-DSA-65 (Milestone 1 — not yet verified).
+- AWS account/profile/region status (Milestone 6 — not to be touched yet).
+Errors/blockers:
+- None yet; waiting for Aditya's real PowerShell output.
+Design decisions confirmed:
+- None. Option A remains "proposed — awaiting supervisor/team approval".
+Decisions still provisional:
+- Recommended project folder: C:\Projects\exam-crypto-cloud (not created yet).
+Reference files updated:
+- None changed in content this step (no tested interface exists yet).
+Next exact action:
+- Aditya runs the Milestone 0 PowerShell inspection commands and pastes the
+  real output (with username redacted if desired).
+
+----------------------------------------------------------------------
+[2026-10-19 14:55 Asia/Kolkata] — Milestone 0: Environment check results (reported by Aditya from his PC)
+Commands actually run (by Aditya, Windows PowerShell):
+- $PSVersionTable.PSVersion, OS caption, py --version, py -0p,
+  python --version, pip --version, git --version, code --version, aws --version
+Exact results (as reported):
+- OS: Windows 11 Home Single Language
+- PowerShell: 5.1
+- py --version: Python 3.14.7
+- py -0p: Python 3.14.7 and Python 3.13 installed
+- python --version: Python 3.14.3   <-- differs from py launcher (3.14.7)
+- pip: 26.2.1
+- Git: 2.53.0.windows.2
+- VS Code: 1.142.0
+- AWS CLI: 2.28.9 (installed; NOT configured or used — no credentials, no resources)
+Observations:
+- "python" and "py" resolve to different 3.14 builds. Decision: always use
+  "py -3.14" to create the venv, then use the venv's own python.exe.
+Errors/blockers: none.
+Milestone 0 status: COMPLETE (documents reviewed + environment inspected).
+Next exact action:
+- Milestone 1, step 1: check whether C:\Projects\exam-crypto-cloud already exists.
+
+----------------------------------------------------------------------
+[2026-10-19 ~15:10 Asia/Kolkata] — Milestone 1: Environment files prepared (NOT yet run on Aditya's PC)
+Goal:
+- Project folder, venv, cryptography install, smoke test of all 5 Option A algorithms.
+Library research (official sources, 2026-10-19):
+- Latest stable cryptography: 50.0.2 (2026-09-30). Windows/macOS/Linux wheels
+  built with OpenSSL 4.0.3.
+- ML-KEM-768 and ML-DSA-65 classes added in 47.0.0 (AWS-LC/BoringSSL only);
+  48.0.0 added OpenSSL >= 3.5 support, so pip wheels include them.
+- API: mlkem.MLKEM768PrivateKey / mldsa.MLDSA65PrivateKey (generate, encapsulate,
+  decapsulate, sign(data, context), verify(sig, data, context)).
+Files created:
+- requirements.txt (cryptography==50.0.2 only)
+- README.md (setup steps + planned layout)
+- scripts/check_crypto_env.py (12 checks; in-memory throw-away keys only)
+- .gitignore (from Milestone 0 draft)
+Commands actually run:
+- By Claude in its cloud Linux workspace only: check script run with
+  cryptography 50.0.1 / OpenSSL 4.0.2 / Python 3.13.16 inside a venv.
+  Result: 12/12 checks passed. (PyPI was blocked there, so 50.0.2 itself
+  was NOT installed/tested by Claude.)
+- NOTHING has been run on Aditya's Windows PC for Milestone 1 yet.
+Tests run and exact results on Aditya's PC:
+- Not run yet.
+Errors/blockers: none yet.
+Reference files updated: none (no agreed interfaces).
+Next exact action:
+- Aditya creates the folder in VS Code, copies the files in, runs the setup
+  commands and pastes the full output of scripts\check_crypto_env.py.
+
+----------------------------------------------------------------------
+[2026-10-27 22:07 Asia/Kolkata] — Milestone 1: Environment set up and verified ON ADITYA'S PC
+Project root (actual):
+- C:\Users\Asus\cap presentation   (files extracted directly here; the
+  planned C:\Projects\exam-crypto-cloud location was NOT used — Aditya's choice)
+Commands actually run (by Aditya, PowerShell 5.1):
+- py -3.14 -m venv .venv                         -> no output (success)
+- .\.venv\Scripts\Activate.ps1                   -> prompt shows (.venv)
+- python -c "import sys; print(sys.executable); print(sys.version)"
+    -> C:\Users\Asus\cap presentation\.venv\Scripts\python.exe
+    -> 3.14.7 (tags/v3.14.7:823f032, Aug 5 2026) [MSC v.1944 64 bit (AMD64)]
+- python -m pip install -r requirements.txt
+    -> Successfully installed cffi-2.1.1 cryptography-50.0.2 pycparser-3.12
+       (wheel: cryptography-50.0.2-cp311-abi3-win_amd64.whl)
+- python scripts\check_crypto_env.py
+Tests run and exact results:
+- Backend reported: OpenSSL 4.0.3 29 Sep 2026
+- RESULT: 12/12 checks passed
+  PASS venv active | PASS cryptography>=48 (50.0.2)
+  PASS ML-KEM-768 encaps/decaps (secret 32 B, KEM ct 1088 B)
+  PASS HKDF-SHA-256 (deterministic; context separation)
+  PASS AES-256-GCM round trip (40 B -> 56 B incl. 16 B tag)
+  PASS AES-256-GCM rejects tampered ciphertext (InvalidTag)
+  PASS AES-256-GCM rejects wrong AAD (InvalidTag)
+  PASS SHA3-256 NIST vector 'abc' = 3a985da7...11431532
+  PASS SHA3-256 differs for changed input
+  PASS ML-DSA-65 sign/verify (sig 3309 B, pk 1952 B)
+  PASS ML-DSA-65 rejects modified message (InvalidSignature)
+  PASS ML-DSA-65 rejects wrong context (InvalidSignature)
+Errors/blockers:
+- None. pip printed an upgrade notice (26.2.1 -> 26.2.2); deliberately ignored,
+  not needed for this milestone.
+Security notes:
+- All keys in the check were in-memory throw-away keys; nothing written to disk.
+- No AWS credentials configured, no AWS resources created, no cost incurred.
+Reference files updated: none (no agreed interfaces yet).
+Milestone 1 status: ENVIRONMENT VERIFIED. Remaining: initialise Git and confirm
+.gitignore excludes .venv.
+Next exact action:
+- git init + git status in the project root; then Milestone 2 (separate small
+  demos per algorithm).
+
+----------------------------------------------------------------------
+[2026-10-27 22:13 Asia/Kolkata] — Milestone 1: Git repository initialised
+Commands actually run (by Aditya):
+- git init; git add .; git commit -m "Milestone 1: environment setup and cryptocheck (12/12 pass)"
+  -> [master (root-commit) e0725a1], 9 files changed, 654 insertions
+- git rev-parse --show-toplevel -> C:/Users/Asus/cap presentation
+- git check-ignore -v .venv     -> .gitignore:2:.venv/  .venv  (venv correctly ignored)
+Notes:
+- LF->CRLF warnings for requirements.txt and check_crypto_env.py: harmless
+  Windows line-ending conversion.
+- Committed files: .gitignore, README.md, SELF_DONE_STUFF.txt, 4 reference
+  files, requirements.txt, scripts/check_crypto_env.py. No keys/secrets/.venv.
+Milestone 1 status: COMPLETE.
+Next exact action:
+- Push to private GitHub repo github.com/adityarenushe21/exam-crypto-cloud,
+  then Milestone 2 (ML-KEM-768 demo).
+
+----------------------------------------------------------------------
+[2026-10-27 22:21 Asia/Kolkata] — Milestone 2, Demo 1: ML-KEM-768 — PASSED on Aditya's PC
+Files created: scripts/demos/demo_01_mlkem.py (Aditya placed it in project root;
+  recommended location scripts/demos/)
+Command actually run (by Aditya): python demo_01_mlkem.py
+Exact result: RESULT: 6/6 expected behaviours observed — DEMO 1 PASSED
+- pk 1184 B, private seed 64 B, shared secret 32 B, KEM ciphertext 1088 B
+- encaps/decaps secrets match; fresh secret per encapsulation
+- wrong private key and tampered KEM ciphertext -> NO exception, different secret
+  (implicit rejection) => AES-GCM tag must be what detects wrong key/tampering
+- 64-byte seed save/reload recovers same key ID and secret
+Security decisions:
+- Recipient ML-KEM key pair belongs to the release service; uploader only needs
+  the public key. Key ID = first 16 hex of SHA3-256(raw public key) (proposed).
+Next exact action: Demo 2 (HKDF-SHA-256).
+
+----------------------------------------------------------------------
+[2026-10-27 22:27 Asia/Kolkata] — Milestone 2, Demo 2: HKDF-SHA-256 — PASSED on Aditya's PC
+Command actually run: python scripts\demos\demo_02_hkdf.py
+Exact result: RESULT: 6/6 expected behaviours observed — DEMO 2 PASSED
+- both sides derive identical 32-byte key; changing salt / paper_id / secret
+  changes key; HKDF object reuse blocked (AlreadyFinalized)
+Proposed (not final) HKDF info: exam-crypto-cloud|v1|aes-256-gcm-content-key|paper_id=<id>
+Git: commit e1e95ab pushed to github.com/adityarenushe21/exam-crypto-cloud (main).
+Issue found: commit e1e95ab added a duplicate scripts/demos/check_crypto_env.py
+  and did NOT include demo_01_mlkem.py. Fix commands given to Aditya.
+Next exact action: fix repo layout; Demo 3 (AES-256-GCM).
+
+----------------------------------------------------------------------
+[2026-10-28 01:55 Asia/Kolkata] — Repo layout fixed + Milestone 2, Demo 3: AES-256-GCM — PASSED on Aditya's PC
+Git: commit 4c49c39 pushed (removed duplicate scripts/demos/check_crypto_env.py;
+  scripts/check_crypto_env.py restored). demo_01_mlkem.py now in scripts/demos/
+  but NOT yet confirmed committed (commit showed only 1 file changed).
+Command actually run: python scripts\demos\demo_03_aesgcm.py
+Exact result: RESULT: 9/9 expected behaviours observed — DEMO 3 PASSED
+- 5200 B plaintext -> 5216 B (16 B GCM tag); no readable text in .enc
+- round trip OK; new nonce -> different ciphertext
+- InvalidTag for: flipped ciphertext bit, flipped tag bit, truncation,
+  wrong key, wrong nonce, wrong AAD paper_id
+- Cross-platform check: SHA3-256 of fake paper = 3aead8fde13cdba9... on both
+  Aditya's Windows PC and Claude's Linux sandbox.
+Proposed (not final) AAD: exam-crypto-cloud|v1|paper_id=<id>
+Other: PowerShell execution policy needed again after restart; suggested
+  Set-ExecutionPolicy -Scope CurrentUser RemoteSigned.
+Next exact action: commit demo_01 + demo_03; Demo 4 (SHA3-256).
+
+----------------------------------------------------------------------
+[2026-10-28 ~02:00 Asia/Kolkata] — Milestone 2, Demos 4 & 5 prepared
+Files created: scripts/demos/demo_04_sha3.py, scripts/demos/demo_05_mldsa.py
+Claude sandbox results (Linux, cryptography 50.0.1): Demo 4 5/5 PASS, Demo 5 8/8 PASS.
+Aditya's PC: Demo 4 — output NOT yet pasted (unconfirmed). Demo 5 — not yet run.
+Verification note: Keccak-256('abc') reference value 4e03657a...6c45 checked by
+  Claude with a throw-away reference implementation (sponge confirmed against
+  hashlib SHA3-256); not shipped in the project.
+Proposed (not final):
+- Manifest signed bytes = json.dumps(sort_keys=True, separators=(",",":"),
+  ensure_ascii=True).encode("utf-8"); ML-DSA context "exam-crypto-cloud/manifest/v1".
+  Cross-language canonicalization (e.g. RFC 8785 JCS) to be decided in Milestone 3.
+- Blockchain digest = SHA3-256 over exact ciphertext+tag bytes, passed as bytes32
+  (awaiting Harsh's confirmation).
+Aditya asked to pause Git steps; demo_01/03/04/05 commits pending.
+Next exact action: Aditya runs Demo 4 and Demo 5 and pastes output.
+
+----------------------------------------------------------------------
+[2026-10-28 02:00 Asia/Kolkata] — Milestone 2 COMPLETE on Aditya's PC
+- Demo 4 SHA3-256: RESULT 5/5 — DEMO 4 PASSED (avalanche 128/256 bits)
+- Demo 5 ML-DSA-65: RESULT 8/8 — DEMO 5 PASSED (sig 3309 B, pk 1952 B, seed 32 B)
+Summary: Demo1 6/6, Demo2 6/6, Demo3 9/9, Demo4 5/5, Demo5 8/8 — all on
+Windows 11 / Python 3.14.7 / cryptography 50.0.2.
+
+----------------------------------------------------------------------
+[2026-10-28 ~02:30 Asia/Kolkata] — Milestone 3: combined pipeline WRITTEN (Claude sandbox only)
+Files created:
+- examcrypto/: __init__, __main__, errors, constants, encoding, kem, kdf, aead,
+  hashing, signatures, manifest, keystore, storage, authz, pipeline, cli
+- tests/__init__.py, tests/test_pipeline.py (41 tests, stdlib unittest — no new packages)
+- README.md rewritten (format v1, release order, limitations)
+Verified facts (Claude sandbox, cryptography 50.0.1):
+- Encrypted PKCS#8 PEM works for ML-KEM-768 and ML-DSA-65 private keys; wrong
+  passphrase -> ValueError (mapped to KEY_PASSPHRASE_INVALID).
+Tests run (Claude sandbox): python -m unittest discover -s tests -> Ran 41 tests, OK
+Mutation check (Claude sandbox): each of these deliberate bugs made tests FAIL:
+  skip signature verify (4 fail), skip time check (1), skip digest check (1),
+  skip trusted-signer check (1), skip authz (2), load private key before time
+  check (1), allow storage overwrite (1), skip manifest field-set check (1+1 err).
+CLI end-to-end (Claude sandbox): init-keys OK; second init-keys -> KEY_ALREADY_EXISTS;
+  seal OK; verify VERIFIED; release before time -> RELEASE_TIME_NOT_REACHED;
+  release as auditor -> ROLE_NOT_ALLOWED; --simulate-now without EXAM_DEMO_MODE=1 ->
+  refused; with demo mode -> RELEASED, output byte-identical to original;
+  stored files contain no plaintext.
+Design decisions (PROPOSED, documented in README "Format v1"):
+- Paper ID opaque "pap_"+16 hex; versions v1..vN; storage write-once.
+- AAD binds paper_id, version, exam_id, release_at_utc.
+- Release order: role -> manifest -> trusted signer -> signature -> digest ->
+  time -> unlock ML-KEM key -> decaps -> HKDF -> AES-GCM.
+- Upload limits: PDF magic "%PDF-", max 20 MB, exam_id [A-Za-z0-9_-]{1,64}.
+Not yet done: tests NOT yet run on Aditya's PC; no audit events; no API; no S3.
+Reference files: unchanged (Aditya's instruction; interfaces not agreed).
+Next exact action: Aditya copies files, runs the 41 tests and the CLI demo.
+
+----------------------------------------------------------------------
+[2026-10-28 02:15 Asia/Kolkata] — Milestone 3 CLI demo on Aditya's PC (partial)
+Commands actually run (by Aditya):
+- python -m examcrypto make-sample -> SAMPLE_CREATED output\sample_paper.pdf (607 bytes)
+- seal with release time now+2 min -> SEALED pap_a7cb90e1f8b7c2c4 v1,
+  release_at 2026-10-27T20:45:02Z, ciphertext SHA3-256 d808c186...08e1
+- verify/release with literal placeholder "pap_XXXXXXXX" -> PAPER_NOT_FOUND
+  (user error: placeholder not replaced; correct behaviour for unknown ID)
+- seal with release time now+5 min -> pap_2253b378110766a0
+- release pap_2253b378110766a0 before 2026-10-27T20:50:15Z ->
+  FAILED RELEASE_TIME_NOT_REACHED, and NO passphrase prompt for the release
+  (the only prompt shown belonged to the seal step) => private key not unlocked
+  before release time. TIME-LOCK CONFIRMED ON ADITYA'S PC.
+Not yet confirmed on Aditya's PC: 41 unit tests; successful release; role denial.
+
+----------------------------------------------------------------------
+[2026-10-28 02:18 Asia/Kolkata] — Milestone 3: unit tests on Aditya's PC
+- Aditya reported "its done" after being asked to run
+  python -m unittest discover -s tests. Exact output was NOT pasted, so the
+  41/41 result on Windows is recorded as "reported by Aditya, output not captured".
+- Successful release of pap_2253b378110766a0 and role-denial check: Aditya
+  reports done; output not pasted.
+Milestone 3 status: DONE (time-lock confirmed with real output; tests reported passing).
+Next exact action: Milestone 4 — extra attack tests + one-command demo script.
+
+----------------------------------------------------------------------
+[2026-10-28 ~02:45 Asia/Kolkata] — Milestone 4: extra tests + guide demo WRITTEN (Claude sandbox only)
+Files created/changed:
+- tests/test_attacks_extra.py (13 new tests): insider re-signs after changing
+  GCM tag / nonce / salt / release time / AAD text; ciphertext moved from another
+  paper; manifest copied into another version slot; verifier trusts a different
+  authority; KEM vs signing key types differ; lost passphrase; nonce/salt/KEM
+  ciphertext unique over 30 seals; real CLI run end-to-end in a temp folder
+  (init twice, early release denied, --simulate-now refused without demo mode,
+  release OK, no overwrite) and missing input file.
+- scripts/run_demo.py: one-command narrated demo in a temp folder (11 scenarios).
+- README.md status/test count updated.
+Tests run (Claude sandbox, cryptography 50.0.1, Python 3.13): Ran 54 tests — OK.
+Bug found and fixed while writing tests: test helper could not parse init-keys
+  output (JSON followed by a note line) -> switched to JSONDecoder.raw_decode.
+Mutation checks (Claude sandbox):
+- release time removed from AAD -> insider-time test FAILS (caught)
+- object-path check removed -> version-slot test FAILS (caught)
+- AAD consistency check removed -> AAD-text test FAILS (caught)
+- paper_id removed from AAD only -> still OK (HKDF info also binds paper_id);
+  removed from BOTH AAD and HKDF -> moved-ciphertext test FAILS. Two independent
+  binding layers confirmed.
+run_demo.py (Claude sandbox): 11/11 scenarios as expected, exit 0; ML-KEM
+  private key NOT unlocked during the early attempt.
+Not yet done: tests/demo NOT yet run on Aditya's PC.
+Next exact action: Aditya extracts milestone4 zip, runs tests + run_demo.py.
+
+----------------------------------------------------------------------
+[2026-10-28 02:21 Asia/Kolkata] — Milestone 4 tests PASSED ON ADITYA'S PC
+Command actually run: python -m unittest discover -s tests
+Exact result: Ran 54 tests in 6.725s — OK
+  (Windows 11 / Python 3.14.7 / cryptography 50.0.2; slower than sandbox mainly
+  due to the CLI subprocess tests)
+This also confirms the 41 Milestone 3 tests on Windows (they are part of the 54).
+scripts\run_demo.py: output not yet pasted.
+
+----------------------------------------------------------------------
+[2026-10-28 ~03:10 Asia/Kolkata] — Milestone 5: API + event contract WRITTEN (Claude sandbox only)
+Context: Aditya reports teammates have not started; he asked Claude to design
+  the interfaces. All teammate-facing items are labelled PROPOSED / MOCK.
+Library choice: Flask 3.1.3 (latest stable, released 2026-02-18 per Flask
+  changelog). FastAPI could not be tested in Claude's sandbox (PyPI blocked).
+  Added flask==3.1.3 to requirements.txt (NOT yet installed on Aditya's PC).
+Files created:
+- examcrypto/events.py (whitelisted event schema v1, JSONL sink)
+- examcrypto/blockchain.py (MockBlockchain: anchor_paper/get_status, status MOCK_ANCHORED)
+- examcrypto/service.py (PaperService: pipeline + one event per call + anchoring)
+- examcrypto/api.py (Flask /api/v1: health, upload, new version, status,
+  manifest, release, events; bearer dev tokens; error->HTTP mapping; no-store,
+  nosniff; no stack traces in responses)
+- tests/test_api.py (23 tests), scripts/api_demo_client.py (stdlib HTTP client)
+- docs/API_CONTRACT.md (sections for Nayan, Harsh, Ansh; open questions)
+Files changed: examcrypto/cli.py (+serve, +dev-tokens), examcrypto/authz.py
+  (+read_events for admin/auditor), requirements.txt, README.md
+Tests run (Claude sandbox, cryptography 50.0.1, Flask 3.1.3, Werkzeug 3.1.8):
+  Ran 77 tests — OK.
+  Note: one ResourceWarning from the 413 test is caused by Flask's TEST CLIENT
+  spooling the 21 MB fake upload to a temp file (closed by garbage collector);
+  not an application leak.
+Real-HTTP check (Claude sandbox): serve + curl and serve + api_demo_client.py:
+  health 200; student upload 403; upload 201 MOCK_ANCHORED; status
+  NOT_YET_RELEASABLE; early release 423; admin release 403; release at time 200
+  application/pdf identical to original; events show DENIED/SUCCESS correctly.
+Reference files: UNCHANGED (Aditya's earlier instruction). Contract lives in
+  docs/API_CONTRACT.md instead.
+Not yet done: nothing from Milestone 5 run on Aditya's PC yet.
+Next exact action: pip install -r requirements.txt; run 77 tests; serve + client.
+
+----------------------------------------------------------------------
+[2026-10-28 18:15 Asia/Kolkata] — Review of Harsh's "examvault" project (read-only)
+What was reviewed: all 23 files (3 Solidity contracts, Hardhat tests/scripts,
+  packages/crypto "ChronoSeal" JS library + tests, README).
+Not run: Harsh's tests could NOT be executed in Claude's sandbox (npm registry
+  blocked). README claims 7 crypto tests + 19 contract tests; Claude counted
+  7 test() and 19 it() blocks in the source. Pass/fail NOT verified.
+Key findings (integration gaps):
+1. Two competing encryption designs: Harsh's ChronoSeal (AES-256-GCM + Shamir
+   3-of-5 + RSA-OAEP-3072 + ECDSA P-256 + SHA-256) vs Option A (ML-KEM-768 +
+   HKDF + AES-256-GCM + SHA3-256 + ML-DSA-65). Team decision required.
+2. Different release models: Harsh = custodian threshold approvals on-chain,
+   centres decrypt in browser; Aditya = single release service enforces time.
+3. examcrypto release does NOT consult ExamVault status -> a Frozen / Revoked /
+   Rescheduled / Compromised paper could still be released by Aditya's server.
+4. Field mismatches: paperId bytes32 vs "pap_..." string; masterHash SHA-256 vs
+   SHA3-256; manifestRoot = Merkle of per-centre variants (Aditya has no centres);
+   custodians/threshold>=2 required; orgId; no versions on-chain (revoke+backup).
+5. Audit: Harsh's AuditAnchor needs sequenced, hash-chained, signed events;
+   Aditya's events are unsigned JSONL without seq/prevHash.
+6. Nothing in Harsh's repo stores ciphertext (no S3) and there is no backend
+   yet; a backend Ethereum account (Controller/Anchorer) key is unaddressed.
+7. docs/API_CONTRACT.md "suggested contract shape" is now OBSOLETE - must be
+   aligned to Harsh's real ExamVault.sealPaper(SealParams).
+No code changed. Next exact action: team decision on which crypto/release model.
+
+----------------------------------------------------------------------
+[2026-10-28 ~19:30 Asia/Kolkata] — Milestones 6+7: S3 adapter + integration with Harsh's contracts
+Request: Aditya asked Claude to complete and integrate both his and Harsh's parts,
+  delivered as one zip with aditya/ and harsh/ folders.
+Decision applied: Option A (Aditya's PQ crypto encrypts; Harsh's ExamVault authorizes
+  release with 3-of-5 custodians; AuditAnchor anchors audit batches). PENDING team/guide approval.
+Aditya side - files changed/added:
+- events.py: v2 events = seq + prev_hash + event_hash (SHA3-256 of canonical body) +
+  ML-DSA-65 signature with a SEPARATE audit key; verify_chain(); None fields omitted
+- keystore.py: audit_private()/audit_public() (created on first use; old key folders still work)
+- blockchain.py: GatewayBlockchain (HTTP client for Harsh's gateway) + MockBlockchain that
+  emulates ExamVault release rules (TooEarly, threshold, freeze/revoke, reschedule-later)
+- pipeline.py: release step 6 = chain_authorize; check_chain_authorization()
+- service.py: anchoring on seal, retry_anchor, chain-aware status, anchor_events, verify_events
+- api.py: /papers/{id}/anchor, /events/anchor, /events/verify, demo-only mock approve route;
+  423/503 mappings for chain codes
+- cli.py: seal/verify/release via service; --offline (demo only), mock-approve,
+  anchor-events, verify-events; EXAM_STORAGE / EXAM_CHAIN configuration
+- storage.py: S3Storage (IfNoneMatch="*" write-once, SSE-KMS or SSE-S3, no delete)
+- tests/test_adapters.py (16 new), tests/test_api.py (+12), test_attacks_extra CLI story updated
+- docs/AWS_S3_SETUP.md, docs/API_CONTRACT.md v2, requirements-aws.txt (boto3, unpinned)
+Harsh side (ADDED only; his 23 original files byte-identical, checked with diff -r):
+- blockchain/gateway/{core.js, server.js, README.md, test/core.test.js, test/fakes.js}
+- blockchain/scripts/{setup-local.js, custodian-approve.js, custodian-freeze.js}
+- blockchain/test/Gateway.test.js (7 tests vs real contracts), INTEGRATION_NOTES.md
+Facts verified:
+- AWS docs: If-None-Match "*" on PutObject -> 412 Precondition Failed if object exists;
+  409 only on concurrent delete (retry) -> mapped to STORAGE_UNAVAILABLE.
+Tests actually run (Claude sandbox only):
+- Python: Ran 105 tests - OK (also from the packaged copy)
+- run_demo.py 11/11; check_crypto_env 12/12
+- Mutation checks (all caught): release ignores chain (9 errors), ignore FROZEN/REVOKED (2),
+  ignore chain digest (1), ignore threshold (1F+4E), events unsigned (5F+1E), no hash
+  chaining (5F+1E), S3 overwrite allowed (1), key loaded before chain check (2)
+- Harsh crypto tests 7/7 and gateway unit tests 10/10 (Node 22) using a TEST-ONLY Keccak
+  stand-in for @noble/hashes (verified: keccak("")=c5d24601...a470, keccak("abc")=4e03657a...6c45,
+  SHA3 mode == Node sha3-256 on 1000 random bytes); npm registry blocked in sandbox.
+- Python API <-> gateway core over real HTTP with fake contracts: 13/13 steps as expected
+  (anchored, 423 early, contract TooEarly, 423 CHAIN_NOT_RELEASED, approvals -> RELEASED,
+  release 200 identical, frozen -> CHAIN_PAPER_BLOCKED, events anchored contiguously, chain verify OK)
+NOT run: npx hardhat test (19 existing + 7 new), real gateway server, real AWS S3,
+  anything on Aditya's PC since Milestone 4.
+Reference files: unchanged.
+Next exact action: Aditya runs Part A + Part B of HOW_TO_RUN_EVERYTHING.md and pastes results.
+
+----------------------------------------------------------------------
+[2026-10-28 19:23 Asia/Kolkata] — Integrated package, Step 1 PASSED ON ADITYA'S PC
+Location: C:\Users\Asus\cap presentation\cap\Capstone_Integrated\aditya (new .venv created;
+  the old .venv/keys in "cap presentation" no longer exist)
+Installed: cryptography 50.0.2, flask 3.1.3, werkzeug 3.1.9, jinja2 3.1.6, click 8.5.0,
+  itsdangerous 2.2.0, blinker 1.9.0, markupsafe 3.0.4, cffi 2.1.1, pycparser 3.12
+Results (Windows 11, Python 3.14.7, OpenSSL 4.0.3):
+- check_crypto_env.py: 12/12 passed
+- python -m unittest discover -s tests: Ran 105 tests in 12.379s - OK
+- run_demo.py: 11/11 scenarios
+Warnings seen (harmless): ResourceWarning "Implicitly cleaning up HTTPError 409/404" from
+  GatewayBlockchain._call not closing error responses -> FIXED in Claude's copy (with e:),
+  to be shipped in next update; ResourceWarning from Flask test client temp file (known).
+Next: Step 2 - Harsh's tests (Node.js, npm install, npx hardhat test).
+
+----------------------------------------------------------------------
+[2026-10-28 19:33 Asia/Kolkata] — Step 2: Harsh's tests PASSED ON ADITYA'S PC
+Environment: Node v24.14.1, npm 11.11.0, Hardhat compiled solc 0.8.24 (7 files, evm paris)
+- packages/crypto: npm install (added 1 package, 0 vulnerabilities); npm test -> 7/7 pass
+- blockchain: npm install (314 packages; npm audit reports 28 vulnerabilities in dev
+  dependencies: 18 low, 3 moderate, 7 high - NOT fixed; do not run "npm audit fix --force",
+  it can upgrade Hardhat across breaking versions; review later)
+- npx hardhat test -> 26 passing (2s): Harsh's 19 + 7 NEW "Chain gateway <-> real contracts"
+  => gateway integration with the REAL ExamVault/AuditAnchor verified for the first time.
+- node --test gateway/test/core.test.js -> 10/10 pass
+Next: Step 3 - full system on a local Hardhat node (5 terminals).
+
+----------------------------------------------------------------------
+[2026-10-28 21:05 Asia/Kolkata] — Step 3: full system on a REAL local Hardhat chain (partial)
+Ran on Aditya's PC: npx hardhat node; setup-local.js (OrgRegistry 0x5FbD..0aa3,
+  ExamVault 0xe7f1..0512, AuditAnchor 0x9fE4..a6e0, org ORG-MITWPU-EXAMS); gateway server on
+  :8546; examcrypto serve with EXAM_CHAIN=gateway; api_demo_client.py.
+Confirmed with real output:
+- upload pap_2a17f4b2e1e485aa -> SEALED, blockchain_status ANCHORED,
+  tx 0xe726...d49d (ExamVault#sealPaper, block #11, gas 280418)
+- on-chain getPaper: status SEALED, master_hash == SHA3-256 ciphertext digest (ebcc2ac1...561a),
+  threshold 3, 5 custodians
+- early release -> 423 RELEASE_TIME_NOT_REACHED; admin release -> 403
+- after release time, no approvals -> 423 CHAIN_NOT_RELEASED ("custodian approvals 0/3")
+- 8 audit events anchored on-chain: AuditAnchor#anchorBatch tx 0x7209...ab17, block #12,
+  batch 0, seq 1-8; signed audit chain verify ok (9 events, signatures checked)
+Not yet done: custodian approvals. Terminal 5 was run with the literal placeholder PAPER_ID
+  (contract correctly reverted PaperUnknown for all 3 custodians); then expected-output text
+  was typed as commands. Paper is still SEALED, so approval + release can be done now.
+Bug found: /api/v1/health hard-coded "blockchain":"mock","storage":"local" even in gateway
+  mode -> FIXED in Claude's copy (reports actual adapter); ships in next update. Tests: 105 OK.
+
+----------------------------------------------------------------------
+[2026-11-02 ~13:40 Asia/Kolkata] — TEAM CHANGE + Module: AI threat detection (ansh/) BUILT (Claude sandbox)
+Context: Aditya reports Ansh and Nayan have left; Aditya + Harsh now own all modules and asked
+  Claude to build their parts module by module, test them, and push to
+  github.com/adityarenushe21/exam-crypto-cloud.
+GitHub: add_repo failed twice ("link your GitHub account") - NOTHING pushed. Delivered as zip.
+Found: a partial ansh/threatdetect package from an interrupted earlier attempt (11 files,
+  never run, no tests). Reviewed and completed rather than trusted.
+Fixes/additions:
+- synthetic.py: per-attack episode ids (evaluation had counted 8 episodes for 6 attacks)
+- alerts.py (new): append-only AlertStore with review statuses + history; reviewers cannot edit scores
+- chainflag.py (new): HIGH alerts -> gateway /risk/flag -> AuditAnchor.flagRisk with
+  HMAC-SHA3-256(secret salt, role:actor_id) pseudonyms; event_hash links to anchored log entry
+- scoring.py: suppression counts persisted; alert carries event_hash; every MEDIUM/HIGH alert has
+  a reason (found an alert with an empty reason list in the demo)
+- watcher.py: AlertStore, optional on-chain flagging (HIGH only), tampered state persisted
+- Harsh gateway: POST /risk/flag (+1 node test, +1 Hardhat test vs real AuditAnchor)
+Tests (Claude sandbox, Python 3.13, numpy 2.5.3, scipy 1.18.1, scikit-learn 1.9.1, joblib 1.6.0):
+- ansh: Ran 25 tests - OK (incl. cross-module tests on REAL examcrypto signed events)
+- gateway core: 11/11 (Node 22, Keccak test shim)
+- Mutation checks caught: IF uncapped, suppression not persisted, tampered log trusted, unsalted
+  pseudonym, 1-h window never expiring, reviewers editing scores, MEDIUM alerts on-chain
+  (the last one survived at first -> new test added -> caught)
+Evaluation (LABELLED SYNTHETIC, train seed 1 / test seed 2, threshold MEDIUM):
+  combined precision 0.98 recall 0.99 FPR 0.007; RF missed held-out attack type 0/6, rules 6/6.
+  Report: ansh/reports/evaluation.md. Explicitly NOT real-world accuracy.
+Verified fact: scikit-learn 1.9.1 (2026-09-10) has cp314 win_amd64 wheels (CERN PyPI mirror listing).
+NOT run yet: anything on Aditya's PC; Hardhat test for /risk/flag; live watch with real chain.
+Next: Aditya runs Part D; then Module: Nayan's access control + dashboard.

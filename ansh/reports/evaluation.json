@@ -1,0 +1,112 @@
+{
+  "data": "LABELLED SYNTHETIC (threatdetect.synthetic)",
+  "train": {
+    "seed": 1,
+    "events": 1835,
+    "attack_events": 462
+  },
+  "test": {
+    "seed": 2,
+    "events": 1806,
+    "attack_events": 450
+  },
+  "threshold": "alert if score >= 40 (MEDIUM)",
+  "event_level": {
+    "rules": {
+      "precision": 1.0,
+      "recall": 0.8489,
+      "f1": 0.9183,
+      "false_positive_rate": 0.0,
+      "confusion": {
+        "tp": 382,
+        "fp": 0,
+        "fn": 68,
+        "tn": 1356
+      }
+    },
+    "isolation_forest": {
+      "precision": 0.9735,
+      "recall": 0.4889,
+      "f1": 0.6509,
+      "false_positive_rate": 0.0044,
+      "confusion": {
+        "tp": 220,
+        "fp": 6,
+        "fn": 230,
+        "tn": 1350
+      }
+    },
+    "random_forest": {
+      "precision": 0.9867,
+      "recall": 0.9911,
+      "f1": 0.9889,
+      "false_positive_rate": 0.0044,
+      "confusion": {
+        "tp": 446,
+        "fp": 6,
+        "fn": 4,
+        "tn": 1350
+      }
+    },
+    "combined": {
+      "precision": 0.9802,
+      "recall": 0.9911,
+      "f1": 0.9856,
+      "false_positive_rate": 0.0066,
+      "confusion": {
+        "tp": 446,
+        "fp": 9,
+        "fn": 4,
+        "tn": 1347
+      }
+    }
+  },
+  "episode_level": {
+    "early_release_probing": {
+      "rules": "6/6",
+      "isolation_forest": "6/6",
+      "random_forest": "6/6",
+      "combined": "6/6"
+    },
+    "credential_stuffing": {
+      "rules": "6/6",
+      "isolation_forest": "4/6",
+      "random_forest": "6/6",
+      "combined": "6/6"
+    },
+    "role_probing": {
+      "rules": "6/6",
+      "isolation_forest": "6/6",
+      "random_forest": "6/6",
+      "combined": "6/6"
+    },
+    "tampering": {
+      "rules": "6/6",
+      "isolation_forest": "0/6",
+      "random_forest": "6/6",
+      "combined": "6/6"
+    },
+    "off_hours_bulk_access": {
+      "rules": "6/6",
+      "isolation_forest": "1/6",
+      "random_forest": "6/6",
+      "combined": "6/6"
+    },
+    "blocked_paper_access": {
+      "rules": "6/6",
+      "isolation_forest": "3/6",
+      "random_forest": "6/6",
+      "combined": "6/6"
+    }
+  },
+  "unseen_attack": {
+    "held_out_type": "off_hours_bulk_access",
+    "episodes_detected": {
+      "rules": "6/6",
+      "isolation_forest": "1/6",
+      "random_forest": "0/6",
+      "combined": "6/6"
+    },
+    "false_positive_rate_combined": 0.0081
+  }
+}

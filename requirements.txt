@@ -1,4 +1,0 @@
-# Milestone 1: only what is needed right now.
-# cryptography >= 48 ships ML-KEM and ML-DSA in its pip wheels (OpenSSL >= 3.5 backend).
-# 50.0.2 = latest stable release on 2026-10-19 (cryptography.io changelog).
-cryptography==50.0.2
