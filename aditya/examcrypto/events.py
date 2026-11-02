@@ -22,17 +22,20 @@ from .hashing import sha3_256, digests_equal
 EVENT_SCHEMA_VERSION = "2"
 GENESIS_HASH = "0" * 64
 AUDIT_SIGNATURE_CONTEXT = b"exam-crypto-cloud/audit-event/v1"
-EVENT_TYPES = {"UPLOAD", "STATUS_CHECK", "MANIFEST_READ", "RELEASE_REQUEST", "AUTH", "ANCHOR"}
+EVENT_TYPES = {"UPLOAD", "STATUS_CHECK", "MANIFEST_READ", "RELEASE_REQUEST", "AUTH", "ANCHOR",
+               "ADMIN_ACTION"}
 RESULTS = {"SUCCESS", "DENIED", "FAILED"}
 
 # reason codes that mean "policy said no" (vs. bad data / system failure)
 DENIED_CODES = {"AUTH_REQUIRED", "ROLE_NOT_ALLOWED", "RELEASE_TIME_NOT_REACHED",
-                "CHAIN_NOT_RELEASED", "CHAIN_PAPER_BLOCKED"}
+                "CHAIN_NOT_RELEASED", "CHAIN_PAPER_BLOCKED", "LOGIN_FAILED", "MFA_REQUIRED",
+                "ACCOUNT_LOCKED", "ACCOUNT_RESTRICTED"}
 
 CONTENT_FIELDS = (
     "schema_version", "event_id", "event_type", "timestamp_utc", "source_component",
     "request_id", "actor_id", "actor_role", "result", "reason_code",
     "paper_id", "paper_version", "exam_id", "ciphertext_sha3_256_hex", "manifest_sha3_256_hex",
+    "action", "target_actor_id", "alert_id",
 )
 CHAIN_FIELDS = ("seq", "prev_hash", "event_hash", "signature_b64")
 ALLOWED_FIELDS = CONTENT_FIELDS + CHAIN_FIELDS

@@ -93,7 +93,7 @@ class PaperService:
         except ExamCryptoError as exc:
             return {"found": False, "status": "UNAVAILABLE", "reason_code": exc.reason_code}
 
-    def status(self, *, paper_id, actor, version=None, request_id=None):
+    def status(self, *, paper_id, actor, version=None, request_id=None, _emit_event=True):
         def work():
             authz.require(actor, "verify")
             versions = self.storage.versions(paper_id) if pipeline._ID_RE.match(paper_id) else []
@@ -137,9 +137,28 @@ class PaperService:
             )
             return out
 
+        if not _emit_event:
+            return work()
         out = self._run("STATUS_CHECK", actor, request_id, work, paper_id=paper_id)
         self._emit("STATUS_CHECK", actor, request_id, out["reason_code"], paper_id=paper_id,
                    paper_version=out.get("paper_version"))
+        return out
+
+    def list_papers(self, *, actor, request_id=None, limit: int = 200):
+        """Latest-version status of every stored paper (dashboard). One STATUS_CHECK event."""
+        def work():
+            authz.require(actor, "verify")
+            out = []
+            for pid in self.storage.list_papers()[-limit:]:
+                try:
+                    st = self.status(paper_id=pid, actor=actor, request_id=request_id, _emit_event=False)
+                except ExamCryptoError as exc:
+                    st = {"paper_id": pid, "release_status": "ERROR", "reason_code": exc.reason_code}
+                out.append(st)
+            return out
+
+        out = self._run("STATUS_CHECK", actor, request_id, work)
+        self._emit("STATUS_CHECK", actor, request_id, action="LIST_PAPERS")
         return out
 
     # ----------------------------------------------------------------- manifest

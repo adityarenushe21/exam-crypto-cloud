@@ -21,6 +21,11 @@ from .events import build_event
 # reason_code -> HTTP status
 HTTP_STATUS = {
     "AUTH_REQUIRED": 401,
+    "LOGIN_FAILED": 401,
+    "MFA_REQUIRED": 401,
+    "ACCOUNT_LOCKED": 429,
+    "ACCOUNT_RESTRICTED": 403,
+    "CONFLICT": 409,
     "ROLE_NOT_ALLOWED": 403,
     "INVALID_INPUT": 400,
     "NOT_A_PDF": 415,
@@ -51,7 +56,12 @@ def load_tokens(path: str | Path) -> dict:
     return {t: v for t, v in data.items() if isinstance(v, dict) and "role" in v}
 
 
-def create_app(service, tokens: dict, audit_public=None, demo_mode: bool = False) -> Flask:
+def create_app(service, tokens: dict | None = None, audit_public=None, demo_mode: bool = False,
+               authenticator=None) -> Flask:
+    """tokens: MOCK dev bearer tokens (examcrypto serve).
+    authenticator(request) -> actor dict: real login (Nayan's controlcenter). It must raise
+    ExamCryptoError(AUTH_REQUIRED / ACCOUNT_RESTRICTED) itself. Exactly one of the two is used."""
+    tokens = tokens or {}
     app = Flask(__name__)
     app.config["MAX_CONTENT_LENGTH"] = MAX_UPLOAD_BYTES + 64 * 1024   # file + form fields
 
@@ -74,6 +84,8 @@ def create_app(service, tokens: dict, audit_public=None, demo_mode: bool = False
         return resp
 
     def actor_or_401():
+        if authenticator is not None:
+            return authenticator(request)
         header = request.headers.get("Authorization", "")
         if header.startswith("Bearer "):
             supplied = header[7:].strip().encode()
@@ -206,4 +218,6 @@ def create_app(service, tokens: dict, audit_public=None, demo_mode: bool = False
                                                         request_id=g.request_id),
                         "request_id": g.request_id})
 
+    app.config["EXAMCRYPTO_SERVICE"] = service
+    app.extensions["examcrypto_actor"] = actor_or_401      # lets other blueprints reuse auth
     return app
