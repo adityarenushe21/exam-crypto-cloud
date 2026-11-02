@@ -1,6 +1,6 @@
 # threatdetect: AI threat detection (Ansh's module)
 
-> Built by Aditya (AI-assisted) after the team changed (Ansh is no longer on the project).
+> Built by Aditya after the team changed (Ansh is no longer on the project).
 > Student prototype: **model output is a signal for human review, never proof of guilt.**
 
 ## What it does

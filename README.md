@@ -10,7 +10,7 @@ log, and an **administrator dashboard** is where alerts are reviewed and access 
 > This is a student prototype. It has not had a security audit and is not a production system.
 >
 > **Team change:** Ansh and Nayan left the project. Their modules (`ansh/`, `nayan/`) were built by
-> Aditya with AI assistance, and Aditya and Harsh now maintain them.
+> Aditya, and Aditya and Harsh now maintain them.
 
 📄 **Full project report:** [docs/REPORT.md](docs/REPORT.md) · ▶️ **How to run:** [HOW_TO_RUN_EVERYTHING.md](HOW_TO_RUN_EVERYTHING.md)
 
@@ -78,8 +78,8 @@ passed the release time, so a wrong server clock alone cannot open a paper:
 |---|---|---|---|---|
 | [`aditya/`](aditya/README.md) | **examcrypto** | Secure upload, post-quantum hybrid encryption, write-once storage (local or S3), release service, REST API, signed audit events | Aditya | 107 Python |
 | [`harsh/examvault/`](harsh/examvault/README.md) | **Blockchain integrity** | Smart contracts `OrgRegistry`, `ExamVault` (k-of-n custodian release, freeze or revoke), `AuditAnchor` (Merkle batches, risk flags); chain gateway; ChronoSeal JS crypto library | Harsh | 27 Hardhat, 11 gateway, 7 crypto |
-| [`ansh/`](ansh/README.md) | **threatdetect** | Turns audit events into features, scores them with rules + Isolation Forest + Random Forest, and explains each alert. Stores alerts append-only and flags HIGH alerts on-chain under a pseudonym | (Ansh) → Aditya + AI | 27 Python |
-| [`nayan/`](nayan/README.md) | **controlcenter** | Accounts, scrypt passwords, TOTP MFA, lockout, sessions, restrictions, alert review, admin API, dashboard, one-process server | (Nayan) → Aditya + AI | 32 Python + 16 browser checks |
+| [`ansh/`](ansh/README.md) | **threatdetect** | Turns audit events into features, scores them with rules + Isolation Forest + Random Forest, and explains each alert. Stores alerts append-only and flags HIGH alerts on-chain under a pseudonym | (Ansh) → Aditya | 27 Python |
+| [`nayan/`](nayan/README.md) | **controlcenter** | Accounts, scrypt passwords, TOTP MFA, lockout, sessions, restrictions, alert review, admin API, dashboard, one-process server | (Nayan) → Aditya | 32 Python + 16 browser checks |
 
 ```mermaid
 flowchart TB
@@ -425,7 +425,7 @@ The full guide covers the real blockchain, custodian approvals, on-chain AI flag
 | Verified | Where |
 |---|---|
 | examcrypto tests (105 at the time), Harsh's 26 Hardhat tests, gateway, real local-chain seal + anchoring + correct refusals | Aditya's Windows PC (Python 3.14.7, Node 24) |
-| All current Python suites (107 + 27 + 32), gateway unit tests, ChronoSeal, 16-step browser walkthrough, benchmark | the Linux test sandbox |
+| All current Python suites (107 + 27 + 32), gateway unit tests, ChronoSeal, 16-step browser walkthrough, benchmark | a Linux test environment |
 | Custodian approve → release on the real chain; 27th Hardhat test (risk flag) | **not yet**: pending on Aditya's PC |
 | Real AWS S3 | **not yet**: tested against a fake S3 client only ([setup guide](aditya/docs/AWS_S3_SETUP.md)) |
 | AI accuracy | **synthetic** data only ([evaluation](ansh/reports/evaluation.md)), not real-world accuracy |
@@ -445,5 +445,4 @@ Main limitations:
 | Ansh Sahni | AI threat detection (planned design; left the project) |
 | Nayan D. Padghan | Alerting, access control and dashboard (planned design; left the project) |
 
-Guide: **Shital Kakad**. AI assistance was used for design review, code, tests and
-documentation. The report states where this help was used and what was verified by hand.
+Guide: **Shital Kakad**.

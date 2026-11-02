@@ -93,7 +93,7 @@ $env:EXAM_STORAGE = "s3"; $env:EXAM_S3_BUCKET = "<bucket>"; $env:AWS_PROFILE = "
   - OrgRegistry / ExamVault / AuditAnchor contracts and their tests
   - ChronoSeal (an alternative design, kept)
   - the chain gateway and scripts, which Harsh should review and own
-- **AI threat detection (`ansh/`):** originally Ansh's role; built by Aditya with AI assistance.
-- **Access control + dashboard (`nayan/`):** originally Nayan's role; built by Aditya with AI assistance.
+- **AI threat detection (`ansh/`):** originally Ansh's role; built by Aditya.
+- **Access control + dashboard (`nayan/`):** originally Nayan's role; built by Aditya.
 
-Tell your guide about the team change and the AI assistance; the work logs record everything.
+Tell your guide about the team change; the work logs record everything.

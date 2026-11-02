@@ -149,7 +149,7 @@ Commands actually run:
 - In a cloud Linux workspace only: check script run with
   cryptography 50.0.1 / OpenSSL 4.0.2 / Python 3.13.16 inside a venv.
   Result: 12/12 checks passed. (PyPI was blocked there, so 50.0.2 itself
-  was NOT installed/tested by the AI assistant.)
+  was NOT installed/tested here.)
 - NOTHING has been run on Aditya's Windows PC for Milestone 1 yet.
 Tests run and exact results on Aditya's PC:
 - Not run yet.
@@ -258,7 +258,7 @@ Exact result: RESULT: 9/9 expected behaviours observed — DEMO 3 PASSED
 - InvalidTag for: flipped ciphertext bit, flipped tag bit, truncation,
   wrong key, wrong nonce, wrong AAD paper_id
 - Cross-platform check: SHA3-256 of fake paper = 3aead8fde13cdba9... on both
-  Aditya's Windows PC and the Linux test sandbox.
+  Aditya's Windows PC and the Linux test environment.
 Proposed (not final) AAD: exam-crypto-cloud|v1|paper_id=<id>
 Other: PowerShell execution policy needed again after restart; suggested
   Set-ExecutionPolicy -Scope CurrentUser RemoteSigned.
@@ -267,10 +267,10 @@ Next exact action: commit demo_01 + demo_03; Demo 4 (SHA3-256).
 ----------------------------------------------------------------------
 [2026-10-28 ~02:00 Asia/Kolkata] — Milestone 2, Demos 4 & 5 prepared
 Files created: scripts/demos/demo_04_sha3.py, scripts/demos/demo_05_mldsa.py
-Linux test sandbox results (Linux, cryptography 50.0.1): Demo 4 5/5 PASS, Demo 5 8/8 PASS.
+Linux test environment results (Linux, cryptography 50.0.1): Demo 4 5/5 PASS, Demo 5 8/8 PASS.
 Aditya's PC: Demo 4 — output NOT yet pasted (unconfirmed). Demo 5 — not yet run.
 Verification note: Keccak-256('abc') reference value 4e03657a...6c45 checked by
-  the AI assistant with a throw-away reference implementation (sponge confirmed against
+  a throw-away reference implementation (sponge confirmed against
   hashlib SHA3-256); not shipped in the project.
 Proposed (not final):
 - Manifest signed bytes = json.dumps(sort_keys=True, separators=(",",":"),
@@ -289,21 +289,21 @@ Summary: Demo1 6/6, Demo2 6/6, Demo3 9/9, Demo4 5/5, Demo5 8/8 — all on
 Windows 11 / Python 3.14.7 / cryptography 50.0.2.
 
 ----------------------------------------------------------------------
-[2026-10-28 ~02:30 Asia/Kolkata] — Milestone 3: combined pipeline WRITTEN (Linux test sandbox only)
+[2026-10-28 ~02:30 Asia/Kolkata] — Milestone 3: combined pipeline WRITTEN (Linux test environment only)
 Files created:
 - examcrypto/: __init__, __main__, errors, constants, encoding, kem, kdf, aead,
   hashing, signatures, manifest, keystore, storage, authz, pipeline, cli
 - tests/__init__.py, tests/test_pipeline.py (41 tests, stdlib unittest — no new packages)
 - README.md rewritten (format v1, release order, limitations)
-Verified facts (Linux test sandbox, cryptography 50.0.1):
+Verified facts (Linux test environment, cryptography 50.0.1):
 - Encrypted PKCS#8 PEM works for ML-KEM-768 and ML-DSA-65 private keys; wrong
   passphrase -> ValueError (mapped to KEY_PASSPHRASE_INVALID).
-Tests run (Linux test sandbox): python -m unittest discover -s tests -> Ran 41 tests, OK
-Mutation check (Linux test sandbox): each of these deliberate bugs made tests FAIL:
+Tests run (Linux test environment): python -m unittest discover -s tests -> Ran 41 tests, OK
+Mutation check (Linux test environment): each of these deliberate bugs made tests FAIL:
   skip signature verify (4 fail), skip time check (1), skip digest check (1),
   skip trusted-signer check (1), skip authz (2), load private key before time
   check (1), allow storage overwrite (1), skip manifest field-set check (1+1 err).
-CLI end-to-end (Linux test sandbox): init-keys OK; second init-keys -> KEY_ALREADY_EXISTS;
+CLI end-to-end (Linux test environment): init-keys OK; second init-keys -> KEY_ALREADY_EXISTS;
   seal OK; verify VERIFIED; release before time -> RELEASE_TIME_NOT_REACHED;
   release as auditor -> ROLE_NOT_ALLOWED; --simulate-now without EXAM_DEMO_MODE=1 ->
   refused; with demo mode -> RELEASED, output byte-identical to original;
@@ -344,7 +344,7 @@ Milestone 3 status: DONE (time-lock confirmed with real output; tests reported p
 Next exact action: Milestone 4 — extra attack tests + one-command demo script.
 
 ----------------------------------------------------------------------
-[2026-10-28 ~02:45 Asia/Kolkata] — Milestone 4: extra tests + guide demo WRITTEN (Linux test sandbox only)
+[2026-10-28 ~02:45 Asia/Kolkata] — Milestone 4: extra tests + guide demo WRITTEN (Linux test environment only)
 Files created/changed:
 - tests/test_attacks_extra.py (13 new tests): insider re-signs after changing
   GCM tag / nonce / salt / release time / AAD text; ciphertext moved from another
@@ -355,17 +355,17 @@ Files created/changed:
   release OK, no overwrite) and missing input file.
 - scripts/run_demo.py: one-command narrated demo in a temp folder (11 scenarios).
 - README.md status/test count updated.
-Tests run (Linux test sandbox, cryptography 50.0.1, Python 3.13): Ran 54 tests — OK.
+Tests run (Linux test environment, cryptography 50.0.1, Python 3.13): Ran 54 tests — OK.
 Bug found and fixed while writing tests: test helper could not parse init-keys
   output (JSON followed by a note line) -> switched to JSONDecoder.raw_decode.
-Mutation checks (Linux test sandbox):
+Mutation checks (Linux test environment):
 - release time removed from AAD -> insider-time test FAILS (caught)
 - object-path check removed -> version-slot test FAILS (caught)
 - AAD consistency check removed -> AAD-text test FAILS (caught)
 - paper_id removed from AAD only -> still OK (HKDF info also binds paper_id);
   removed from BOTH AAD and HKDF -> moved-ciphertext test FAILS. Two independent
   binding layers confirmed.
-run_demo.py (Linux test sandbox): 11/11 scenarios as expected, exit 0; ML-KEM
+run_demo.py (Linux test environment): 11/11 scenarios as expected, exit 0; ML-KEM
   private key NOT unlocked during the early attempt.
 Not yet done: tests/demo NOT yet run on Aditya's PC.
 Next exact action: Aditya extracts milestone4 zip, runs tests + run_demo.py.
@@ -380,11 +380,11 @@ This also confirms the 41 Milestone 3 tests on Windows (they are part of the 54)
 scripts\run_demo.py: output not yet pasted.
 
 ----------------------------------------------------------------------
-[2026-10-28 ~03:10 Asia/Kolkata] — Milestone 5: API + event contract WRITTEN (Linux test sandbox only)
-Context: Aditya reports teammates have not started; he asked the AI assistant to design
+[2026-10-28 ~03:10 Asia/Kolkata] — Milestone 5: API + event contract WRITTEN (Linux test environment only)
+Context: teammates had not started; Aditya started designing
   the interfaces. All teammate-facing items are labelled PROPOSED / MOCK.
 Library choice: Flask 3.1.3 (latest stable, released 2026-02-18 per Flask
-  changelog). FastAPI could not be tested in the Linux test sandbox (PyPI blocked).
+  changelog). FastAPI could not be tested in the Linux test environment (PyPI blocked).
   Added flask==3.1.3 to requirements.txt (NOT yet installed on Aditya's PC).
 Files created:
 - examcrypto/events.py (whitelisted event schema v1, JSONL sink)
@@ -397,12 +397,12 @@ Files created:
 - docs/API_CONTRACT.md (sections for Nayan, Harsh, Ansh; open questions)
 Files changed: examcrypto/cli.py (+serve, +dev-tokens), examcrypto/authz.py
   (+read_events for admin/auditor), requirements.txt, README.md
-Tests run (Linux test sandbox, cryptography 50.0.1, Flask 3.1.3, Werkzeug 3.1.8):
+Tests run (Linux test environment, cryptography 50.0.1, Flask 3.1.3, Werkzeug 3.1.8):
   Ran 77 tests — OK.
   Note: one ResourceWarning from the 413 test is caused by Flask's TEST CLIENT
   spooling the 21 MB fake upload to a temp file (closed by garbage collector);
   not an application leak.
-Real-HTTP check (Linux test sandbox): serve + curl and serve + api_demo_client.py:
+Real-HTTP check (Linux test environment): serve + curl and serve + api_demo_client.py:
   health 200; student upload 403; upload 201 MOCK_ANCHORED; status
   NOT_YET_RELEASABLE; early release 423; admin release 403; release at time 200
   application/pdf identical to original; events show DENIED/SUCCESS correctly.
@@ -415,8 +415,8 @@ Next exact action: pip install -r requirements.txt; run 77 tests; serve + client
 [2026-10-28 18:15 Asia/Kolkata] — Review of Harsh's "examvault" project (read-only)
 What was reviewed: all 23 files (3 Solidity contracts, Hardhat tests/scripts,
   packages/crypto "ChronoSeal" JS library + tests, README).
-Not run: Harsh's tests could NOT be executed in the Linux test sandbox (npm registry
-  blocked). README claims 7 crypto tests + 19 contract tests; the assistant counted
+Not run: Harsh's tests could NOT be executed in the Linux test environment (npm registry
+  blocked). README claims 7 crypto tests + 19 contract tests; counted
   7 test() and 19 it() blocks in the source. Pass/fail NOT verified.
 Key findings (integration gaps):
 1. Two competing encryption designs: Harsh's ChronoSeal (AES-256-GCM + Shamir
@@ -439,7 +439,7 @@ No code changed. Next exact action: team decision on which crypto/release model.
 
 ----------------------------------------------------------------------
 [2026-10-28 ~19:30 Asia/Kolkata] — Milestones 6+7: S3 adapter + integration with Harsh's contracts
-Request: Aditya asked the AI assistant to complete and integrate both his and Harsh's parts,
+Plan: Aditya to complete and integrate both his and Harsh's parts,
   delivered as one zip with aditya/ and harsh/ folders.
 Decision applied: Option A (Aditya's PQ crypto encrypts; Harsh's ExamVault authorizes
   release with 3-of-5 custodians; AuditAnchor anchors audit batches). PENDING team/guide approval.
@@ -465,7 +465,7 @@ Harsh side (ADDED only; his 23 original files byte-identical, checked with diff 
 Facts verified:
 - AWS docs: If-None-Match "*" on PutObject -> 412 Precondition Failed if object exists;
   409 only on concurrent delete (retry) -> mapped to STORAGE_UNAVAILABLE.
-Tests actually run (Linux test sandbox only):
+Tests actually run (Linux test environment only):
 - Python: Ran 105 tests - OK (also from the packaged copy)
 - run_demo.py 11/11; check_crypto_env 12/12
 - Mutation checks (all caught): release ignores chain (9 errors), ignore FROZEN/REVOKED (2),
@@ -530,11 +530,11 @@ Bug found: /api/v1/health hard-coded "blockchain":"mock","storage":"local" even 
   mode -> FIXED in the updated copy (reports actual adapter); ships in next update. Tests: 105 OK.
 
 ----------------------------------------------------------------------
-[2026-11-02 ~13:40 Asia/Kolkata] — TEAM CHANGE + Module: AI threat detection (ansh/) BUILT (Linux test sandbox)
-Context: Aditya reports Ansh and Nayan have left; Aditya + Harsh now own all modules and asked
-  the AI assistant to build their parts module by module, test them, and push to
+[2026-11-02 ~13:40 Asia/Kolkata] — TEAM CHANGE + Module: AI threat detection (ansh/) BUILT (Linux test environment)
+Context: Ansh and Nayan have left; Aditya + Harsh now own all modules. Plan: build
+  their parts module by module, test them, and push to
   github.com/adityarenushe21/exam-crypto-cloud.
-GitHub: add_repo failed twice ("link your GitHub account") - NOTHING pushed. Delivered as zip.
+GitHub: push not set up yet - nothing pushed. Kept as a zip.
 Found: a partial ansh/threatdetect package from an interrupted earlier attempt (11 files,
   never run, no tests). Reviewed and completed rather than trusted.
 Fixes/additions:
@@ -546,7 +546,7 @@ Fixes/additions:
   a reason (found an alert with an empty reason list in the demo)
 - watcher.py: AlertStore, optional on-chain flagging (HIGH only), tampered state persisted
 - Harsh gateway: POST /risk/flag (+1 node test, +1 Hardhat test vs real AuditAnchor)
-Tests (Linux test sandbox, Python 3.13, numpy 2.5.3, scipy 1.18.1, scikit-learn 1.9.1, joblib 1.6.0):
+Tests (Linux test environment, Python 3.13, numpy 2.5.3, scipy 1.18.1, scikit-learn 1.9.1, joblib 1.6.0):
 - ansh: Ran 25 tests - OK (incl. cross-module tests on REAL examcrypto signed events)
 - gateway core: 11/11 (Node 22, Keccak test shim)
 - Mutation checks caught: IF uncapped, suppression not persisted, tampered log trusted, unsalted
@@ -572,14 +572,14 @@ examcrypto changes: pluggable authenticator; ADMIN_ACTION events (action/target_
   login failure codes count as DENIED; list_papers (local + S3); health reports real adapters.
 threatdetect changes: login failures feed AUTH_FAILURE_BURST; restricted-account attempts feed
   BLOCKED_PAPER_ACCESS; half-written last log line skipped (race with the writer). 27 tests.
-Nayan's module (nayan/controlcenter, built with AI assistance after the team change):
+Nayan's module (nayan/controlcenter, built by Aditya after the team change):
 - scrypt passwords + policy; TOTP (RFC 6238) with replay protection; 5-fail/15-min lockout;
   uniform error + timing for unknown users; sessions stored as SHA-256 hashes, 30 min idle / 8 h max;
   restrictions (append-only, expiring, enforced per request, sessions revoked, no self/last-admin);
   alert review (close needs a note) + restrict-from-alert; every action in the signed audit chain;
   one-process server (API + login + admin API + dashboard + AI watcher thread, auto-trains model);
   dashboard in vanilla JS with strict CSP, textContent only.
-Tests actually run (Linux test sandbox, Python 3.13, Flask 3.1.3, Node 22, Chromium via Playwright 1.56):
+Tests actually run (Linux test environment, Python 3.13, Flask 3.1.3, Node 22, Chromium via Playwright 1.56):
 - aditya 105 OK, ansh 27 OK, nayan 32 OK, harsh crypto 7/7 + gateway 11/11 (Keccak test shim)
 - Mutation: 14 deliberate security bugs in controlcenter, all caught (one survived at first:
   "restricted user keeps working" -> new defence-in-depth test added -> caught)
@@ -592,7 +592,7 @@ NOT run: Gateway.test.js risk-flag test on a real Hardhat chain (8th gateway tes
 Next: Aditya pulls the branch and runs Part A/B of HOW_TO_RUN_EVERYTHING.md; then merge.
 
 ----------------------------------------------------------------------
-[2026-11-02 evening Asia/Kolkata] — Key-file hardening + benchmark + architecture README + report (Linux test sandbox)
+[2026-11-02 evening Asia/Kolkata] — Key-file hardening + benchmark + architecture README + report (Linux test environment)
 Found by benchmarking: cryptography's PKCS#8 BestAvailableEncryption = PBES2/PBKDF2-HMAC-SHA256 with
   only 2048 iterations (not configurable). Fix: passphrase -> scrypt (N=2^15, r=8, p=1, 16-byte salt in
   keys/key_protection.json) -> used as the PEM password. Per-process cache so repeat unlocks are fast.

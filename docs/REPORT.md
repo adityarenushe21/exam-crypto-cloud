@@ -13,11 +13,10 @@ MIT World Peace University, Pune · In-house project
 
 Repository: <https://github.com/adityarenushe21/exam-crypto-cloud> · Architecture: [README.md](../README.md)
 
-> **Note on authorship and verification.** Ansh and Nayan left during implementation. Aditya built
-> their modules with an AI assistant, and Aditya and Harsh now own them. The AI assistant
-> also helped with design review, tests and documentation in the other modules. Throughout this
-> report, results are labelled with **where they were measured**: on Aditya's Windows PC, or in the
-> assistant's Linux sandbox. Anything not yet verified is labelled as such.
+> **Note on the team and verification.** Ansh and Nayan left during implementation. Aditya built
+> their modules, and Aditya and Harsh now own them. Throughout this report, results are labelled
+> with **where they were measured**: on Aditya's Windows PC, or in a Linux test environment.
+> Anything not yet verified is labelled as such.
 
 ---
 

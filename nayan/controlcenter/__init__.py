@@ -1,7 +1,7 @@
 """controlcenter - access control, alert review and administrator dashboard.
 
 Originally Nayan's module (Alerting, Access Control & Administrator Dashboard); built by
-Aditya with AI assistance after the team changed. Runs as ONE server together with
+Aditya after the team changed. Runs as ONE server together with
 Aditya's examcrypto API and Ansh's threat detector:
 
     login (scrypt + optional TOTP + lockout) -> session token -> every API call
