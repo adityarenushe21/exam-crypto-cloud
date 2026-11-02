@@ -1,6 +1,8 @@
-# exam-crypto-cloud
+# examcrypto: secure upload, encryption, storage and release (Aditya's module)
 
-Aditya Renushe — Secure Upload, Encryption & Cloud Storage module
+Part of the ExamVault monorepo; see the [root README](../README.md).
+
+Aditya Renushe, Secure Upload, Encryption & Cloud Storage module
 (Blockchain-Based Secure Examination Paper Distribution and Audit System).
 
 Option A (PROPOSED — awaiting supervisor/team approval):
@@ -16,15 +18,16 @@ private AWS S3 storage (Milestone 6). **Student prototype — not a security-aud
 | 4 Automated tests + demo | DONE — 54 tests passed on Aditya's PC |
 | 5 API + event contract | DONE in sandbox — Flask API, signed hash-chained events |
 | 6 AWS S3 | CODE DONE, tested with fake S3 only — no AWS resource created (`docs/AWS_S3_SETUP.md`) |
-| 7 Team integration (Harsh) | DONE in sandbox — real-contract gateway in Harsh's folder; release needs 3-of-5 custodians on-chain |
-| 8 Demo/report | not started |
+| 7 Team integration | DONE: release needs 3-of-5 custodians on Harsh's ExamVault; confirmed on Aditya's PC with a real local Hardhat chain |
+| 8 Demo/report | dashboard demo ready (`nayan/`); report and PPT update not started |
 
-**Test totals (Claude sandbox):** 105 Python tests OK. Not yet re-run on Aditya's PC after Milestone 5.
+**Tests:** 105, all passing on Aditya's PC (Windows 11, Python 3.14.7) and in a fresh clone.
 
 ## Setup (Windows PowerShell)
+One venv for the whole repo; see the root `HOW_TO_RUN_EVERYTHING.md`. From the repo folder:
 ```powershell
-cd "C:\Users\Asus\cap presentation"
 .\.venv\Scripts\Activate.ps1
+cd aditya
 python -m pip install -r requirements.txt
 python scripts\check_crypto_env.py
 python -m unittest discover -s tests -v
