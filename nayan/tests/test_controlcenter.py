@@ -192,6 +192,8 @@ class Server(unittest.TestCase):
         self.assertEqual(self.c.post("/api/v1/auth/login", json={"username": "<script>", "password": "x"}).status_code, 401)
         self.assertEqual(len(self.events_where(reason_code="LOGIN_FAILED")), 3)
         self.assertTrue(all(e["actor_id"] in ("aud1", "nobody", "invalid") for e in self.events_where(reason_code="LOGIN_FAILED")))
+        roles = {e["actor_id"]: e["actor_role"] for e in self.events_where(reason_code="LOGIN_FAILED")}
+        self.assertEqual(roles, {"aud1": "auditor", "nobody": "unknown", "invalid": "unknown"})   # real role for real users
 
     def test_lockout(self):
         for _ in range(5):

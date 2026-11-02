@@ -64,4 +64,14 @@ details summary { cursor: pointer; color: var(--accent); }
 .kv { display: grid; grid-template-columns: max-content 1fr; gap: 4px 14px; font-size: 13px; margin: 8px 0; }
 .kv dt { color: var(--muted); } .kv dd { margin: 0; }
 .empty { padding: 26px; text-align: center; color: var(--muted); }
-@media (max-width: 640px) { .topbar { gap: 10px; } .main { padding: 16px 12px; } th, td { padding: 8px; } }
+.card + .card, .card + .table-wrap, .table-wrap + .card, .table-wrap + .table-wrap { margin-top: 16px; }
+.grid > .card { margin-top: 0; }
+.kvtable th { width: 34%; text-transform: none; letter-spacing: 0; font-size: 13px; }
+@media (max-width: 640px) {
+  .topbar { gap: 8px 12px; padding: 10px 12px; }
+  .brand { flex: 1; }
+  .nav { order: 3; flex: 1 0 100%; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .nav a { white-space: nowrap; }
+  .main { padding: 16px 12px 32px; } th, td { padding: 8px; }
+  .stat .value { font-size: 24px; }
+}

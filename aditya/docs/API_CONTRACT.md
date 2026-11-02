@@ -85,7 +85,10 @@ Allowed values for each status field:
 
 ---
 
-## 3. Nayan — dashboard and access control
+## 3. Access control + dashboard (IMPLEMENTED in `nayan/controlcenter`, originally Nayan's role)
+
+Implemented: real accounts (scrypt), login with lockout and optional TOTP, expiring hashed sessions, account restrictions enforced on every request, AI-alert review, and the web dashboard. The **dev tokens below are only for `python -m examcrypto serve`**; `python -m controlcenter serve` uses real logins. See `nayan/README.md`. The original planning notes follow.
+
 
 - **Paper status screen:** use `GET /papers/{id}` and display the status fields from section 2.
   Show `BLOCKED` in red, with the `reason_code` next to it.

@@ -558,3 +558,35 @@ Evaluation (LABELLED SYNTHETIC, train seed 1 / test seed 2, threshold MEDIUM):
 Verified fact: scikit-learn 1.9.1 (2026-09-10) has cp314 win_amd64 wheels (CERN PyPI mirror listing).
 NOT run yet: anything on Aditya's PC; Hardhat test for /risk/flag; live watch with real chain.
 Next: Aditya runs Part D; then Module: Nayan's access control + dashboard.
+
+----------------------------------------------------------------------
+[2026-11-02 ~14:30 Asia/Kolkata] — GitHub repo + Nayan's module (controlcenter) + browser testing
+GitHub:
+- Claude GitHub App installed by Aditya; push verified. Work is on branch
+  claude/integrated-system of github.com/adityarenushe21/exam-crypto-cloud.
+- Repo restructured into a monorepo with history preserved (git mv): aditya/, harsh/examvault/
+  (from github.com/AizenSosuke-hyogoku/examvault, without its .git), ansh/, nayan/;
+  root .gitignore (keys, venvs, node_modules, generated data), .gitattributes (CRLF/LF),
+  run_all_tests.py, README.md, HOW_TO_RUN_EVERYTHING.md.
+examcrypto changes: pluggable authenticator; ADMIN_ACTION events (action/target_actor_id/alert_id);
+  login failure codes count as DENIED; list_papers (local + S3); health reports real adapters.
+threatdetect changes: login failures feed AUTH_FAILURE_BURST; restricted-account attempts feed
+  BLOCKED_PAPER_ACCESS; half-written last log line skipped (race with the writer). 27 tests.
+Nayan's module (nayan/controlcenter, built with AI assistance after the team change):
+- scrypt passwords + policy; TOTP (RFC 6238) with replay protection; 5-fail/15-min lockout;
+  uniform error + timing for unknown users; sessions stored as SHA-256 hashes, 30 min idle / 8 h max;
+  restrictions (append-only, expiring, enforced per request, sessions revoked, no self/last-admin);
+  alert review (close needs a note) + restrict-from-alert; every action in the signed audit chain;
+  one-process server (API + login + admin API + dashboard + AI watcher thread, auto-trains model);
+  dashboard in vanilla JS with strict CSP, textContent only.
+Tests actually run (Claude sandbox, Python 3.13, Flask 3.1.3, Node 22, Chromium via Playwright 1.56):
+- aditya 105 OK, ansh 27 OK, nayan 32 OK, harsh crypto 7/7 + gateway 11/11 (Keccak test shim)
+- Mutation: 14 deliberate security bugs in controlcenter, all caught (one survived at first:
+  "restricted user keeps working" -> new defence-in-depth test added -> caught)
+- Browser: scripts/browser_check.py 16/16 against a real server (all 4 roles, phone width,
+  no JS errors). Found + fixed: Exam-ID input pattern invalid under the 'v' regex flag; stray
+  "null" node on Papers; failed logins of real users logged with role "unknown"; mobile nav layout;
+  RESTRICTED badge colour.
+NOT run: Gateway.test.js risk-flag test on a real Hardhat chain (8th gateway test; expected
+  total "27 passing"); anything new on Aditya's PC; real AWS S3.
+Next: Aditya pulls the branch and runs Part A/B of HOW_TO_RUN_EVERYTHING.md; then merge.

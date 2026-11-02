@@ -46,11 +46,12 @@ class AuthService:
         locked = self.users.locked_until(username, now)
         if locked:
             self._fail("ACCOUNT_LOCKED", f"too many failed attempts; try again after {format_utc(locked)}",
-                       username, request_id=request_id)
+                       username, self.users.get(username)["role"], request_id)
         if not self.users.check_password(username, password or ""):
-            if self.users.exists(username):
+            known = self.users.get(username)
+            if known:
                 self.users.record_failure(username, now)
-            self._fail("LOGIN_FAILED", generic, username, request_id=request_id)
+            self._fail("LOGIN_FAILED", generic, username, known["role"] if known else None, request_id)
         u = self.users.get(username)
         if not u["active"]:
             self._fail("LOGIN_FAILED", generic, username, u["role"], request_id)
