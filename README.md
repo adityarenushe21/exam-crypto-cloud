@@ -12,9 +12,21 @@ log, and an **administrator dashboard** is where alerts are reviewed and access 
 > **Team change:** Ansh and Nayan left the project. Their modules (`ansh/`, `nayan/`) were built by
 > Aditya, and Aditya and Harsh now maintain them.
 
-📄 **Full project report:** [docs/REPORT.md](docs/REPORT.md) · ▶️ **How to run:** [HOW_TO_RUN_EVERYTHING.md](HOW_TO_RUN_EVERYTHING.md)
+📄 **Full project report:** [docs/REPORT.md](docs/REPORT.md) · ▶️ **How to run:** [section 14](#14-how-to-run)
 
 ![Admin overview](nayan/docs/screenshots/05_admin_overview.png)
+
+**Quick start** (Windows PowerShell; full guide in [section 14](#14-how-to-run)):
+
+```powershell
+git clone https://github.com/adityarenushe21/exam-crypto-cloud.git; cd exam-crypto-cloud
+py -3.14 -m venv .venv; .\.venv\Scripts\Activate.ps1
+python -m pip install -r aditya\requirements.txt -r ansh\requirements.txt
+python run_all_tests.py                                   # all suites should say PASS
+cd aditya; python -m examcrypto init-keys; cd ..\nayan     # once: choose a key passphrase
+python -m controlcenter demo-users                        # once: note the 4 demo logins
+$env:EXAM_DEMO_MODE = "1"; python -m controlcenter serve  # open http://127.0.0.1:8000
+```
 
 ---
 
@@ -33,9 +45,9 @@ log, and an **administrator dashboard** is where alerts are reviewed and access 
 11. [APIs](#11-apis)
 12. [Technology stack](#12-technology-stack)
 13. [Testing](#13-testing)
-14. [Quick start](#14-quick-start-windows-powershell)
+14. [How to run](#14-how-to-run): setup, tests, demo, real blockchain, S3, CLI, configuration, troubleshooting
 15. [Honest status and limitations](#15-honest-status-and-limitations)
-16. [Team and attribution](#16-team-and-attribution)
+16. [Team and ownership](#16-team-and-ownership)
 
 ---
 
@@ -332,7 +344,6 @@ the digital workflow. It does not claim to stop leaks outside it.
 exam-crypto-cloud/
 ├── README.md                     ← you are here (architecture)
 ├── docs/REPORT.md                ← full capstone report
-├── HOW_TO_RUN_EVERYTHING.md      ← step-by-step guide (tests, demo, real chain, S3)
 ├── run_all_tests.py              ← runs every suite, prints PASS/FAIL table
 ├── aditya/                       examcrypto: crypto, storage, release service, API, audit events
 │   ├── examcrypto/               kem, kdf, aead, hashing, signatures, manifest, pipeline, service,
@@ -401,7 +412,22 @@ The changes from the plan were deliberate. Each one is explained in the report, 
 Run everything with `python run_all_tests.py`. Performance: `python aditya/scripts/benchmark.py`
 (see the report for figures).
 
-## 14. Quick start (Windows PowerShell)
+## 14. How to run
+
+Commands are for **Windows PowerShell**. Linux/macOS equivalents are at the end of this section.
+Unless a step says otherwise, run each command from the repository folder (`exam-crypto-cloud`)
+with the virtual environment active.
+
+### 14.0 Prerequisites
+
+| Need | Version | For |
+|---|---|---|
+| Python | 3.13 or newer (tested on 3.13 and 3.14) | everything in `aditya/`, `ansh/`, `nayan/` |
+| Git | any | cloning and updates |
+| Node.js LTS | 22 or 24 | only for Harsh's blockchain parts (14.3, 14.4) |
+| AWS account | — | only for S3 storage (14.5) |
+
+### 14.1 Set up once
 
 ```powershell
 git clone https://github.com/adityarenushe21/exam-crypto-cloud.git
@@ -409,16 +435,135 @@ cd exam-crypto-cloud
 py -3.14 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r aditya\requirements.txt -r ansh\requirements.txt
-python run_all_tests.py                      # every Python suite (+ Node suites once npm-installed)
-
-cd aditya; python -m examcrypto init-keys; cd ..\nayan
-python -m controlcenter demo-users           # prints 4 demo logins ONCE - write them down
-$env:EXAM_DEMO_MODE = "1"
-python -m controlcenter serve                # open http://127.0.0.1:8000
 ```
 
-The full guide covers the real blockchain, custodian approvals, on-chain AI flags and S3:
-[HOW_TO_RUN_EVERYTHING.md](HOW_TO_RUN_EVERYTHING.md).
+To get updates later: `git pull`. If PowerShell blocks `Activate.ps1`, run
+`Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` once.
+
+### 14.2 Run all tests
+
+```powershell
+python run_all_tests.py
+```
+
+**Expected:** `PASS` for aditya (107), ansh (27) and nayan (32).
+
+To include Harsh's suites, install Node.js first, then:
+
+```powershell
+cd harsh\examvault\packages\crypto; npm install; cd ..\..\blockchain; npm install; cd ..\..\..
+python run_all_tests.py --hardhat
+```
+
+**Expected:** crypto 7, gateway 11, and Hardhat 27 passing (19 contract + 8 gateway).
+
+### 14.3 Demo with the mock blockchain (fastest)
+
+```powershell
+cd aditya; python -m examcrypto init-keys; cd ..           # once - remember the passphrase
+cd nayan; python -m controlcenter demo-users               # once - write the 4 passwords down
+$env:EXAM_DEMO_MODE = "1"
+python -m controlcenter serve                              # asks for the key passphrase
+```
+
+Open **http://127.0.0.1:8000**:
+
+1. Log in as **authority1**, go to Papers, and seal a PDF with a release time 2 minutes away.
+2. Log in as **officer1** and try to release it. It is refused: first because the release time has
+   not come, then with `CHAIN_NOT_RELEASED`.
+3. Approve as the mock custodians (demo only). In a second terminal:
+   `Invoke-RestMethod -Method Post http://127.0.0.1:8000/api/v1/_demo/mock-chain/<paper_id>/approve`
+4. As **officer1**, click **Release**. The PDF downloads.
+5. Log in as **admin1** and open **Alerts**: the AI has flagged the refused attempts. Click
+   **Restrict account**, and officer1 is locked out immediately. Under **Audit log**, click
+   *Verify* and *Anchor*.
+
+### 14.4 Full system on a real local blockchain (5 terminals)
+
+Do 14.1 and the `npm install` step of 14.2 first.
+
+| Terminal | Folder | Command (leave running unless noted) |
+|---|---|---|
+| 1 | `harsh\examvault\blockchain` | `npx hardhat node` |
+| 2 | `harsh\examvault\blockchain` | `npx hardhat run scripts/setup-local.js --network localhost`, then `npx hardhat run gateway/server.js --network localhost` |
+| 3 | `nayan` (venv active) | `$env:EXAM_CHAIN = "gateway"; python -m controlcenter serve --flag-on-chain` |
+| 4 | browser | http://127.0.0.1:8000: seal as authority1; release as officer1 is refused |
+| 5 | `harsh\examvault\blockchain` | `$env:PAPER_ID = "pap_..."; npx hardhat run scripts/custodian-approve.js --network localhost` (runs once, then exits) |
+
+**What you should see:**
+- The paper shows `ANCHORED` with a real `0x…` transaction.
+- After the custodians approve, it shows `RELEASED 3/3`, and the officer can release it.
+- **HIGH** AI alerts appear in terminal 2 as `AuditAnchor#flagRisk` transactions.
+- **Freeze demo:** run `scripts/custodian-freeze.js` with the same `PAPER_ID`. The dashboard shows
+  `BLOCKED`, and release is refused.
+
+Restarting `npx hardhat node` wipes the chain. After a restart, run `setup-local.js` again and seal
+new papers.
+
+### 14.5 AWS S3 storage
+
+Follow [aditya/docs/AWS_S3_SETUP.md](aditya/docs/AWS_S3_SETUP.md): create a private bucket and an
+app user, and set a billing alert first. Then start the server with:
+
+```powershell
+$env:EXAM_STORAGE = "s3"; $env:EXAM_S3_BUCKET = "<bucket>"; $env:AWS_PROFILE = "examcrypto"; $env:AWS_REGION = "ap-south-1"
+python -m controlcenter serve
+```
+
+### 14.6 Command-line tools (no browser)
+
+```powershell
+cd aditya
+python -m examcrypto make-sample                    # creates output\sample_paper.pdf
+python -m examcrypto seal output\sample_paper.pdf --exam-id CS301-ENDSEM --release-at 2026-12-01T09:00:00Z
+python -m examcrypto verify <paper_id>
+python -m examcrypto release <paper_id>             # refused before the release time
+python -m examcrypto verify-events                  # check the signed audit chain
+python scripts\benchmark.py --quick                 # timings on this PC
+
+cd ..\ansh
+python -m threatdetect evaluate                     # AI evaluation on synthetic data
+python -m threatdetect demo
+
+cd ..\nayan
+python -m controlcenter create-user --username alice --role release_officer   # asks for a password
+python -m controlcenter enable-mfa --username alice # prints a setup key for an authenticator app
+python -m controlcenter list-users
+```
+
+### 14.7 Configuration
+
+| Variable | Values | Default | Meaning |
+|---|---|---|---|
+| `EXAM_KEY_PASSPHRASE` | text | asked at start | Passphrase for the key files (avoid in shared terminals) |
+| `EXAM_CHAIN` | `mock` / `gateway` | `mock` | Mock chain, or Harsh's gateway to a real chain |
+| `EXAM_CHAIN_GATEWAY_URL` | URL | `http://127.0.0.1:8546` | Where the gateway runs |
+| `EXAM_STORAGE` | `local` / `s3` | `local` | Where ciphertext and manifests are stored |
+| `EXAM_S3_BUCKET`, `EXAM_S3_PREFIX`, `EXAM_S3_KMS_KEY_ID` | text | — | S3 settings (KMS key optional) |
+| `CONTROLCENTER_DATA_DIR` | folder | `aditya` | Where `keys/` and `local_storage/` live |
+| `EXAM_DEMO_MODE` | `1` | off | Enables demo-only routes such as mock approvals; **never in production** |
+
+`python -m controlcenter serve` options: `--port 8000`, `--no-watcher` (no AI thread),
+`--flag-on-chain` (send HIGH alerts to the chain).
+
+### 14.8 Linux / macOS
+
+Use the same commands, with these differences:
+- Create and activate the environment with `python3 -m venv .venv` and `source .venv/bin/activate`.
+- Use `/` in paths.
+- Set variables with `export EXAM_DEMO_MODE=1` instead of `$env:...`.
+- Call the demo route with `curl -X POST`.
+
+### 14.9 Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| `No module named examcrypto` / `controlcenter` | Run the command from the module's folder (`aditya`, `nayan`, `ansh`) with the venv active |
+| Wrong passphrase / key error | Use the passphrase from `init-keys`; if it is lost, delete `aditya\keys` and run `init-keys` again (old papers can no longer be opened) |
+| `CHAIN_UNAVAILABLE` (503) | Terminals 1 and 2 of 14.4 must be running; or unset `EXAM_CHAIN` to use the mock chain |
+| `CHAIN_UNKNOWN_PAPER` after restarting Hardhat | The chain was wiped: run `setup-local.js` again and seal a new paper |
+| Port 8000 in use | `python -m controlcenter serve --port 8010` |
+| Demo users lost | Delete `aditya\keys\users.json` and run `demo-users` again |
 
 ## 15. Honest status and limitations
 
@@ -436,12 +581,12 @@ Main limitations:
 - One exam centre on-chain.
 - Flask development server; HTTPS must be added in front for deployment.
 
-## 16. Team and attribution
+## 16. Team and ownership
 
 | Member | Module |
 |---|---|
-| Aditya Renushe | Secure upload, encryption and cloud storage (examcrypto); integration; maintains `ansh/`, `nayan/` |
-| Harsh Kapile | Blockchain integrity: smart contracts, gateway, ChronoSeal |
+| Aditya Renushe | `aditya/`: upload validation; ML-KEM-768, HKDF-SHA-256, AES-256-GCM, SHA3-256, ML-DSA-65; signed manifest; storage (local + S3); release service with time and chain checks; API; signed, hash-chained audit events; integration. Also built and maintains `ansh/` and `nayan/` |
+| Harsh Kapile | `harsh/examvault/`: OrgRegistry, ExamVault and AuditAnchor contracts and their tests; chain gateway and scripts; ChronoSeal |
 | Ansh Sahni | AI threat detection (planned design; left the project) |
 | Nayan D. Padghan | Alerting, access control and dashboard (planned design; left the project) |
 

@@ -32,7 +32,7 @@ Optional: `python -m controlcenter enable-mfa --username admin1` prints a setup 
 authenticator app. After that, admin1 needs the 6-digit code to log in.
 
 With the real blockchain, set `$env:EXAM_CHAIN = "gateway"` and add `--flag-on-chain` (see the
-root `HOW_TO_RUN_EVERYTHING.md`).
+root `README.md`, section 14).
 
 ## API
 

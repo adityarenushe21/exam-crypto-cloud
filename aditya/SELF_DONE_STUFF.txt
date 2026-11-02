@@ -604,3 +604,12 @@ Sandbox numbers (Linux container, Python 3.13): ML-KEM encaps 0.03 ms, ML-DSA si
 All suites (sandbox): aditya 107, ansh 27, nayan 32, harsh crypto 7, gateway unit 11 - PASS.
 Docs: README.md expanded with architecture (components, sequences, data formats, trust
   boundaries, threat model); docs/REPORT.md = full capstone project report.
+
+----------------------------------------------------------------------
+[2026-11-02 ~18:10 Asia/Kolkata] — README now holds the full run guide
+HOW_TO_RUN_EVERYTHING.md merged into README.md section 14 (prerequisites, setup, tests, mock demo,
+  real chain, S3, CLI tools, configuration variables, Linux/macOS, troubleshooting) and removed;
+  links in docs/REPORT.md, aditya/README.md, nayan/README.md updated. Quick start added at the top.
+Smoke-tested every CLI command listed in 14.6 in a fresh copy: init-keys, make-sample, seal, verify,
+  release (refused: CHAIN_NOT_RELEASED), verify-events, benchmark --quick, threatdetect evaluate/demo,
+  create-user, enable-mfa, list-users - all work. All suites PASS.

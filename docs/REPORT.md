@@ -538,4 +538,4 @@ python -m threatdetect evaluate                      # AI evaluation (from ansh/
 # browser walkthrough: see the header of nayan\scripts\browser_check.py (needs Playwright + a fresh demo server)
 ```
 
-The real-chain steps are in [HOW_TO_RUN_EVERYTHING.md](../HOW_TO_RUN_EVERYTHING.md), Part C.
+The real-chain steps are in the [README, section 14.4](../README.md#144-full-system-on-a-real-local-blockchain-5-terminals).

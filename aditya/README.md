@@ -24,7 +24,7 @@ private AWS S3 storage (Milestone 6). **Student prototype — not a security-aud
 **Tests:** 107. The version before the login hooks passed on Aditya's PC (Windows 11, Python 3.14.7); the current version passes in a fresh clone in the Linux test sandbox and has not yet been re-run on the PC.
 
 ## Setup (Windows PowerShell)
-One venv for the whole repo; see the root `HOW_TO_RUN_EVERYTHING.md`. From the repo folder:
+One venv for the whole repo; see section 14 "How to run" of the root `README.md`. From the repo folder:
 ```powershell
 .\.venv\Scripts\Activate.ps1
 cd aditya
