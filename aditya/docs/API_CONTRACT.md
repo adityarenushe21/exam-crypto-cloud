@@ -3,7 +3,7 @@
 Owner: Aditya Renushe (crypto + storage module). Last updated: 2026-10-28 (v2, integrated with Harsh's contracts).
 
 **Status labels used below**
-- **TESTED** — implemented and covered by automated tests (107 Python tests + 10 gateway tests pass in Claude's sandbox; Aditya's PC run pending).
+- **TESTED** — implemented and covered by automated tests (107 Python tests + 10 gateway tests pass in the Linux test sandbox; Aditya's PC run pending).
 - **PROPOSED** — the teammate has not confirmed it yet. Change it by talking to Aditya, not by editing code.
 - **MOCK** — a stand-in that the teammate's real module will replace.
 

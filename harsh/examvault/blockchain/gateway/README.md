@@ -37,7 +37,7 @@ for Merkle trees). It adds no new npm packages.
 
 ## Status of testing
 
-- `core.test.js` (10 tests) **passed in Claude's sandbox** with Node 22. Because npm was blocked
+- `core.test.js` (10 tests) **passed in the Linux test sandbox** with Node 22. Because npm was blocked
   there, `@noble/hashes` was replaced by a test-only Keccak stand-in, checked against the
   published Keccak-256 test values.
 - `Gateway.test.js` and the scripts have **not been run yet** (Hardhat could not be installed in

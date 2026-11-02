@@ -79,7 +79,7 @@ Plus every examcrypto route (`/api/v1/papers…`, `/api/v1/events…`), now behi
 restricted user keeps working, MFA can be skipped, TOTP replay is allowed, sessions never expire,
 any password is accepted, there is no CSP, an auditor can act.
 
-**Browser check** (`scripts/browser_check.py`, headless Chromium): 16/16 passed in Claude's sandbox,
+**Browser check** (`scripts/browser_check.py`, headless Chromium): 16/16 passed in the Linux test sandbox,
 covering all four roles plus phone width. It found and fixed a real bug: the Exam-ID field's
 pattern was invalid in modern browsers. Screenshots are in `docs/screenshots/`.
 

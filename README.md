@@ -425,7 +425,7 @@ The full guide covers the real blockchain, custodian approvals, on-chain AI flag
 | Verified | Where |
 |---|---|
 | examcrypto tests (105 at the time), Harsh's 26 Hardhat tests, gateway, real local-chain seal + anchoring + correct refusals | Aditya's Windows PC (Python 3.14.7, Node 24) |
-| All current Python suites (107 + 27 + 32), gateway unit tests, ChronoSeal, 16-step browser walkthrough, benchmark | Claude's Linux sandbox |
+| All current Python suites (107 + 27 + 32), gateway unit tests, ChronoSeal, 16-step browser walkthrough, benchmark | the Linux test sandbox |
 | Custodian approve → release on the real chain; 27th Hardhat test (risk flag) | **not yet**: pending on Aditya's PC |
 | Real AWS S3 | **not yet**: tested against a fake S3 client only ([setup guide](aditya/docs/AWS_S3_SETUP.md)) |
 | AI accuracy | **synthetic** data only ([evaluation](ansh/reports/evaluation.md)), not real-world accuracy |
@@ -445,5 +445,5 @@ Main limitations:
 | Ansh Sahni | AI threat detection (planned design; left the project) |
 | Nayan D. Padghan | Alerting, access control and dashboard (planned design; left the project) |
 
-Guide: **Shital Kakad**. AI assistance (Claude) was used for design review, code, tests and
+Guide: **Shital Kakad**. AI assistance was used for design review, code, tests and
 documentation. The report states where this help was used and what was verified by hand.

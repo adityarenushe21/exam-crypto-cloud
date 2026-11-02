@@ -41,9 +41,9 @@ flow. Its Merkle and keccak helpers **are** used by the gateway.
 
 | Suite | Where | Result |
 |---|---|---|
-| `packages/crypto` (7 tests, unchanged) | Claude sandbox, Node 22, Keccak stand-in for `@noble/hashes` | 7/7 pass |
-| `gateway/test/core.test.js` (10) | Claude sandbox, Node 22, fake contracts | 10/10 pass |
-| Python ↔ gateway HTTP end-to-end | Claude sandbox, gateway core + fake contracts | 13/13 steps correct |
+| `packages/crypto` (7 tests, unchanged) | Linux test sandbox, Node 22, Keccak stand-in for `@noble/hashes` | 7/7 pass |
+| `gateway/test/core.test.js` (10) | Linux test sandbox, Node 22, fake contracts | 10/10 pass |
+| Python ↔ gateway HTTP end-to-end | Linux test sandbox, gateway core + fake contracts | 13/13 steps correct |
 | `npx hardhat test` (19 existing + 7 new) | **not run**: Hardhat unavailable in sandbox | run on your PC |
 
 ## Note about `git status`

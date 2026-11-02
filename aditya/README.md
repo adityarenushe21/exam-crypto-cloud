@@ -21,7 +21,7 @@ private AWS S3 storage (Milestone 6). **Student prototype — not a security-aud
 | 7 Team integration | DONE: release needs 3-of-5 custodians on Harsh's ExamVault; confirmed on Aditya's PC with a real local Hardhat chain |
 | 8 Demo/report | dashboard demo ready (`nayan/`); report and PPT update not started |
 
-**Tests:** 107. The version before the login hooks passed on Aditya's PC (Windows 11, Python 3.14.7); the current version passes in a fresh clone in Claude's sandbox and has not yet been re-run on the PC.
+**Tests:** 107. The version before the login hooks passed on Aditya's PC (Windows 11, Python 3.14.7); the current version passes in a fresh clone in the Linux test sandbox and has not yet been re-run on the PC.
 
 ## Setup (Windows PowerShell)
 One venv for the whole repo; see the root `HOW_TO_RUN_EVERYTHING.md`. From the repo folder:
