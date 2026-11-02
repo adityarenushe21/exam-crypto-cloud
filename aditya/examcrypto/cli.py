@@ -171,8 +171,9 @@ def cmd_dev_tokens(args):
             "roles": roles, "note": "DEV ONLY - tokens are in the file, keep it out of Git"})
 
 
-def make_storage():
+def make_storage(storage_dir=None):
     """EXAM_STORAGE=local (default) or s3 (needs EXAM_S3_BUCKET, optional EXAM_S3_KMS_KEY_ID)."""
+    storage_dir = Path(storage_dir or STORAGE_DIR)
     kind = os.environ.get("EXAM_STORAGE", "local").lower()
     if kind == "s3":
         from .storage import S3Storage
@@ -182,26 +183,27 @@ def make_storage():
         return S3Storage(bucket, prefix=os.environ.get("EXAM_S3_PREFIX", ""),
                          kms_key_id=os.environ.get("EXAM_S3_KMS_KEY_ID") or None,
                          region=os.environ.get("AWS_REGION") or None)
-    return LocalStorage(STORAGE_DIR)
+    return LocalStorage(storage_dir)
 
 
-def make_chain():
+def make_chain(storage_dir=None):
     """EXAM_CHAIN=mock (default) or gateway (Harsh's chain gateway, EXAM_CHAIN_GATEWAY_URL)."""
     from .blockchain import GatewayBlockchain, MockBlockchain
     if os.environ.get("EXAM_CHAIN", "mock").lower() == "gateway":
         return GatewayBlockchain(os.environ.get("EXAM_CHAIN_GATEWAY_URL", "http://127.0.0.1:8546"))
-    return MockBlockchain(STORAGE_DIR / "blockchain_mock" / "state.json")
+    return MockBlockchain(Path(storage_dir or STORAGE_DIR) / "blockchain_mock" / "state.json")
 
 
-def make_service(passphrase: bytes):
+def make_service(passphrase: bytes, keys_dir=None, storage_dir=None):
     from .events import JsonlEventSink
     from .service import PaperService
-    ks = KeyStore(KEYS_DIR)
+    keys_dir, storage_dir = Path(keys_dir or KEYS_DIR), Path(storage_dir or STORAGE_DIR)
+    ks = KeyStore(keys_dir)
     ks.signer_private(passphrase)              # fail fast on a wrong passphrase
-    events = JsonlEventSink(STORAGE_DIR / "events" / "events.jsonl",
+    events = JsonlEventSink(storage_dir / "events" / "events.jsonl",
                             signer=ks.audit_private(passphrase))
-    return ks, PaperService(storage=make_storage(), keystore=ks, passphrase=passphrase,
-                            events=events, blockchain=make_chain())
+    return ks, PaperService(storage=make_storage(storage_dir), keystore=ks, passphrase=passphrase,
+                            events=events, blockchain=make_chain(storage_dir))
 
 
 def cmd_serve(args):

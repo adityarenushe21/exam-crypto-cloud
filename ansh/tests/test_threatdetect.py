@@ -87,6 +87,14 @@ class Features(unittest.TestCase):
         x = fx.update(ev(6, 120, "RELEASE_REQUEST", "off", "release_officer"))
         self.assertEqual(x[IDX["early_release_1h"]], 0)
 
+    def test_login_failures_count_as_auth_failures(self):
+        fx = FeatureExtractor()
+        for i, code in enumerate(["LOGIN_FAILED", "MFA_REQUIRED", "ACCOUNT_LOCKED", "AUTH_REQUIRED"]):
+            x = fx.update(ev(i + 1, i, "AUTH", "mallory", "unknown", "DENIED", code))
+        self.assertEqual(x[IDX["auth_fail_10m"]], 4)
+        x = fx.update(ev(5, 5, "UPLOAD", "mallory", "unknown", "DENIED", "ACCOUNT_RESTRICTED"))
+        self.assertEqual(x[IDX["blocked_paper_1h"]], 1)
+
     def test_actors_are_separate_and_ist_hours(self):
         fx = FeatureExtractor()
         fx.update(ev(1, 0, actor="a"))
@@ -347,6 +355,13 @@ class WatcherOnRealExamcryptoLog(unittest.TestCase):
         self.assertEqual(w.poll(), [])                                # nothing new -> no duplicates
         w2 = Watcher(self.tmp / "events.jsonl", self.tmp / "alerts.jsonl")
         self.assertEqual(w2.poll(), [])                               # restart-safe
+
+    def test_half_written_last_line_is_skipped_not_crashed(self):
+        self.emit_tampering_attempts(1)
+        with (self.tmp / "events.jsonl").open("a", encoding="utf-8") as f:
+            f.write('{"seq": 2, "event_type": "UPL')                  # writer mid-line
+        from threatdetect.schema import load_events
+        self.assertEqual(len(load_events(self.tmp / "events.jsonl")), 1)
 
     def test_medium_alerts_are_not_written_on_chain(self):
         actor = {"actor_id": "off-z", "role": "release_officer"}

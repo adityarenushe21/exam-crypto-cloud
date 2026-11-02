@@ -53,6 +53,13 @@ class LocalStorage:
         return sorted(int(p.name[1:]) for p in folder.iterdir()
                       if p.is_dir() and re.fullmatch(r"v[0-9]{1,6}", p.name))
 
+    def list_papers(self) -> list[str]:
+        folder = self.root / "papers"
+        if not folder.is_dir():
+            return []
+        return sorted(p.name for p in folder.iterdir()
+                      if p.is_dir() and re.fullmatch(r"[A-Za-z0-9_-]{1,64}", p.name))
+
 
 # ============================================================================ S3
 class S3Storage:
@@ -140,6 +147,26 @@ class S3Storage:
                     m = re.fullmatch(r"v([0-9]{1,6})/", cp["Prefix"][len(prefix):])
                     if m:
                         found.add(int(m.group(1)))
+                if not page.get("IsTruncated"):
+                    break
+                token = page.get("NextContinuationToken")
+        except Exception as exc:
+            raise ExamCryptoError(STORAGE_UNAVAILABLE, "S3 list failed") from exc
+        return sorted(found)
+
+    def list_papers(self) -> list[str]:
+        prefix = f"{self.prefix}papers/"
+        found, token = set(), None
+        try:
+            while True:
+                args = {"Bucket": self.bucket, "Prefix": prefix, "Delimiter": "/"}
+                if token:
+                    args["ContinuationToken"] = token
+                page = self.client.list_objects_v2(**args)
+                for cp in page.get("CommonPrefixes", []):
+                    name = cp["Prefix"][len(prefix):].rstrip("/")
+                    if re.fullmatch(r"[A-Za-z0-9_-]{1,64}", name):
+                        found.add(name)
                 if not page.get("IsTruncated"):
                     break
                 token = page.get("NextContinuationToken")

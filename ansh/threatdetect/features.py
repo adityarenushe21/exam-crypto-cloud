@@ -7,7 +7,7 @@ using only events seen so far (no look-ahead), so the same code works offline an
 from collections import defaultdict, deque
 from datetime import timedelta, timezone
 
-from .schema import BLOCKED_CODES, EARLY_RELEASE_CODES, INTEGRITY_CODES, parse_ts
+from .schema import AUTH_FAIL_CODES, BLOCKED_CODES, EARLY_RELEASE_CODES, INTEGRITY_CODES, parse_ts
 
 IST = timezone(timedelta(hours=5, minutes=30))
 WIN_SHORT = timedelta(minutes=10)
@@ -20,7 +20,7 @@ FEATURES = [
     "events_10m",          # actor's events in last 10 min (incl. this one)
     "denied_10m",
     "failed_10m",
-    "auth_fail_10m",       # AUTH_REQUIRED
+    "auth_fail_10m",       # AUTH_REQUIRED / LOGIN_FAILED / MFA_REQUIRED / ACCOUNT_LOCKED
     "early_release_1h",    # RELEASE_TIME_NOT_REACHED / CHAIN_NOT_RELEASED
     "integrity_fail_1h",   # signature / digest / decryption failures
     "role_denied_1h",      # ROLE_NOT_ALLOWED
@@ -62,7 +62,7 @@ class FeatureExtractor:
             "events_10m": len(short),
             "denied_10m": sum(x.get("result") == "DENIED" for x in short),
             "failed_10m": sum(x.get("result") == "FAILED" for x in short),
-            "auth_fail_10m": sum(code(x) == "AUTH_REQUIRED" for x in short),
+            "auth_fail_10m": sum(code(x) in AUTH_FAIL_CODES for x in short),
             "early_release_1h": sum(code(x) in EARLY_RELEASE_CODES for x in long),
             "integrity_fail_1h": sum(code(x) in INTEGRITY_CODES for x in long),
             "role_denied_1h": sum(code(x) == "ROLE_NOT_ALLOWED" for x in long),

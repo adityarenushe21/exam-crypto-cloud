@@ -11,7 +11,8 @@ EARLY_RELEASE_CODES = {"RELEASE_TIME_NOT_REACHED", "CHAIN_NOT_RELEASED"}
 INTEGRITY_CODES = {"SIGNATURE_INVALID", "UNTRUSTED_SIGNER", "CIPHERTEXT_DIGEST_MISMATCH",
                    "DECRYPTION_AUTHENTICATION_FAILED", "CHAIN_RECORD_MISMATCH",
                    "MANIFEST_MALFORMED", "WRONG_RECIPIENT_KEY"}
-BLOCKED_CODES = {"CHAIN_PAPER_BLOCKED"}
+BLOCKED_CODES = {"CHAIN_PAPER_BLOCKED", "ACCOUNT_RESTRICTED"}
+AUTH_FAIL_CODES = {"AUTH_REQUIRED", "LOGIN_FAILED", "MFA_REQUIRED", "ACCOUNT_LOCKED"}
 
 SEVERITIES = ("LOW", "MEDIUM", "HIGH")
 ACTIONS = {"LOW": "ALLOW", "MEDIUM": "REVIEW", "HIGH": "TEMPORARY_RESTRICT"}
@@ -49,9 +50,13 @@ def check_chain(events: list[dict], start_prev: str = GENESIS_HASH, start_seq: i
 
 
 def load_events(path: str | Path, verify: bool = True) -> list[dict]:
+    """Reads complete lines only: a line still being written by examcrypto (no trailing
+    newline yet) is skipped and picked up on the next poll."""
     events = []
     with Path(path).open("r", encoding="utf-8") as f:
         for line in f:
+            if not line.endswith("\n"):
+                break
             if line.strip():
                 events.append(json.loads(line))
     if verify and events and "event_hash" in events[0]:
