@@ -1,29 +1,35 @@
-# --- Python ---
+# ---- secrets: never commit ----
+keys/
+*.pem
+*.key
+.env
+*.env
+!.env.example
+**/pseudonym_salt.bin
+**/users.json
+**/sessions.json
+
+# ---- generated data ----
+local_storage/
+output/
+alerts/
+models/
+**/deployments/localhost.json
+
+# ---- Python ----
 .venv/
 venv/
 __pycache__/
 *.pyc
 .pytest_cache/
 
-# --- Secrets: NEVER commit ---
-.env
-*.env
-!.env.example
-keys/
-*.pem
-*.key
-*_private*
-secrets/
+# ---- Node / Hardhat ----
+node_modules/
+**/artifacts/
+**/cache/
+typechain-types/
 
-# --- Plaintext/encrypted test data produced locally ---
-local_storage/
-output/
-*.bundle
-
-# --- AWS ---
-.aws/
-
-# --- Editors / OS ---
+# ---- editors / OS ----
 .vscode/
 .idea/
 Thumbs.db

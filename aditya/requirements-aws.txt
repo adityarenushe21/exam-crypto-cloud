@@ -1,0 +1,5 @@
+# Optional: only needed when EXAM_STORAGE=s3 (Milestone 6).
+# Conditional writes (IfNoneMatch="*") need a boto3 released after August 2024.
+# Install the latest and record the exact version in SELF_DONE_STUFF.txt:
+#   python -m pip install -r requirements-aws.txt ; python -m pip show boto3
+boto3

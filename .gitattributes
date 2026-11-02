@@ -1,0 +1,9 @@
+# Normalise line endings in the repo (fixes the "every file modified" CRLF/LF noise).
+* text=auto
+*.sol text eol=lf
+*.js text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.png binary
+*.pdf binary

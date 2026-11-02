@@ -1,0 +1,5 @@
+# Pinned versions tested on Windows 11 / Python 3.14.7 (cryptography) and in Claude's sandbox (flask).
+# cryptography >= 48 ships ML-KEM and ML-DSA in its pip wheels (OpenSSL >= 3.5 backend).
+cryptography==50.0.2
+# Milestone 5: HTTP API for teammates (latest stable 3.1.3, released 2026-02-18)
+flask==3.1.3

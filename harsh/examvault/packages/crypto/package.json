@@ -1,0 +1,9 @@
+{
+  "name": "@examvault/crypto",
+  "version": "0.1.0",
+  "description": "ChronoSeal protocol primitives: AES-256-GCM, Shamir (GF256), Merkle, RSA-OAEP, ECDSA, hash-chained audit log",
+  "main": "src/index.js",
+  "license": "MIT",
+  "scripts": { "test": "node --test test/*.test.js" },
+  "dependencies": { "@noble/hashes": "1.5.0" }
+}

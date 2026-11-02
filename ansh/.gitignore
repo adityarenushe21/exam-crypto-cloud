@@ -1,0 +1,5 @@
+models/
+alerts/
+keys/
+__pycache__/
+*.pyc
