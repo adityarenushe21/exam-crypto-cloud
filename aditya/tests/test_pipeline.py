@@ -290,6 +290,29 @@ class KeysAndStorage(Base):
         ct_key, _ = object_keys(r["paper_id"], 1)
         self.assertReason("DUPLICATE_VERSION", self.storage.put, ct_key, b"overwrite attempt")
 
+    def test_passphrase_is_scrypt_stretched(self):
+        from cryptography.hazmat.primitives import serialization as ser
+        cfg = json.loads((self.tmp / "keys" / "key_protection.json").read_text())
+        self.assertEqual((cfg["kdf"], cfg["n"], cfg["r"]), ("scrypt", 2 ** 15, 8))
+        self.assertEqual(self.ks.protection, "scrypt-stretched")
+        pem = (self.tmp / "keys" / "release_mlkem768_private.pem").read_bytes()
+        with self.assertRaises(ValueError):                    # the raw passphrase alone no longer opens the PEM
+            ser.load_pem_private_key(pem, password=PASS)
+        self.ks.recipient_private(PASS)                        # but the KeyStore (scrypt first) does
+
+    def test_legacy_key_folder_still_loads(self):
+        from cryptography.hazmat.primitives import serialization as ser
+        from cryptography.hazmat.primitives.asymmetric.mlkem import MLKEM768PrivateKey
+        legacy = self.tmp / "legacy"
+        legacy.mkdir()
+        k = MLKEM768PrivateKey.generate()
+        (legacy / "release_mlkem768_private.pem").write_bytes(
+            k.private_bytes(ser.Encoding.PEM, ser.PrivateFormat.PKCS8, ser.BestAvailableEncryption(PASS)))
+        ks = KeyStore(legacy)
+        self.assertEqual(ks.protection, "legacy (PBKDF2 2048 only)")
+        self.assertEqual(ks.recipient_private(PASS).public_key().public_bytes_raw(),
+                         k.public_key().public_bytes_raw())
+
     def test_private_keys_are_encrypted_on_disk(self):
         for name in ("release_mlkem768_private.pem", "authority_mldsa65_private.pem"):
             text = (self.tmp / "keys" / name).read_text()

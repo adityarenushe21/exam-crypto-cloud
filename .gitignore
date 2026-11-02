@@ -34,3 +34,4 @@ typechain-types/
 .idea/
 Thumbs.db
 .DS_Store
+benchmark_results.json
