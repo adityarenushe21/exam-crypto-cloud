@@ -44,7 +44,7 @@ $env:EXAM_DEMO_MODE = "1"; python -m controlcenter serve  # open http://127.0.0.
 13. [Testing](#13-testing)
 14. [How to run](#14-how-to-run): setup, tests, demo, real blockchain, S3, CLI, configuration, troubleshooting
 15. [Honest status and limitations](#15-honest-status-and-limitations)
-16. [Team and ownership](#16-team-and-ownership)
+16. [Team](#16-team)
 
 ---
 
@@ -578,13 +578,13 @@ Main limitations:
 - One exam centre on-chain.
 - Flask development server; HTTPS must be added in front for deployment.
 
-## 16. Team and ownership
+## 16. Team
 
-| Member | Module |
-|---|---|
-| Aditya Renushe | `aditya/`: upload validation; ML-KEM-768, HKDF-SHA-256, AES-256-GCM, SHA3-256, ML-DSA-65; signed manifest; storage (local + S3); release service with time and chain checks; API; signed, hash-chained audit events; integration. System integration |
-| Harsh Kapile | `harsh/examvault/`: OrgRegistry, ExamVault and AuditAnchor contracts and their tests; chain gateway and scripts; ChronoSeal |
-| Ansh Sahni | `ansh/`: AI threat detection |
-| Nayan D. Padghan | `nayan/`: alerting, access control and administrator dashboard |
+| Member | Module | Folder |
+|---|---|---|
+| Aditya Renushe | Secure upload, post-quantum encryption and cloud storage | [`aditya/`](aditya/README.md) |
+| Harsh Kapile | Blockchain integrity: smart contracts, chain gateway, ChronoSeal | [`harsh/examvault/`](harsh/examvault/README.md) |
+| Ansh Sahni | AI threat detection | [`ansh/`](ansh/README.md) |
+| Nayan D. Padghan | Alerting, access control and administrator dashboard | [`nayan/`](nayan/README.md) |
 
 Guide: **Shital Kakad**.

@@ -6,7 +6,7 @@ MIT World Peace University, Pune · In-house project
 
 | Team member | Module |
 |---|---|
-| Aditya Renushe | Secure upload, encryption and cloud storage; system integration |
+| Aditya Renushe | Secure upload, encryption and cloud storage |
 | Harsh Kapile | Blockchain integrity (smart contracts, gateway) |
 | Ansh Sahni | AI threat detection |
 | Nayan D. Padghan | Alerting, access control and administrator dashboard |
