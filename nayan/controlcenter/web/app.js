@@ -23,7 +23,7 @@ function h(tag, props, ...kids) {
   return el;
 }
 const $main = () => document.getElementById("main");
-function show(...nodes) { const m = $main(); m.replaceChildren(...nodes.flat()); }
+function show(...nodes) { $main().replaceChildren(...nodes.flat().filter((n) => n !== null && n !== undefined && n !== false)); }
 function banner(msg, kind = "err") {
   const b = document.getElementById("banner");
   if (!msg) { b.hidden = true; return; }
@@ -38,7 +38,8 @@ const BADGE = {
   NOT_YET_RELEASABLE: "plain", AWAITING_CUSTODIANS: "warn", SEALED: "plain", REVIEWING: "warn", ACKNOWLEDGED: "warn",
   MEDIUM: "warn", DENIED: "warn", LOW: "plain", NEW: "bad",
   BLOCKED: "bad", HIGH: "bad", FAILED: "bad", invalid: "bad", mismatch: "bad", FROZEN: "bad", REVOKED: "bad",
-  COMPROMISED: "bad", ERROR: "bad",
+  COMPROMISED: "bad", ERROR: "bad", RESTRICTED: "bad", LOCKED: "bad", "AUDIT LOG TAMPERED": "bad",
+  "NOT ON CHAIN": "warn", active: "ok", LIFTED: "ok", running: "ok", OK: "ok", off: "plain",
 };
 const badge = (v) => h("span", { class: "badge " + (BADGE[v] || "") }, v ?? "—");
 
@@ -168,7 +169,7 @@ async function renderPapers() {
 
 function uploadForm() {
   const file = h("input", { type: "file", accept: "application/pdf,.pdf", required: true });
-  const exam = h("input", { placeholder: "CS301-ENDSEM", pattern: "[A-Za-z0-9_-]{1,64}", required: true });
+  const exam = h("input", { placeholder: "CS301-ENDSEM", pattern: "[A-Za-z0-9_\\-]{1,64}", required: true });
   const when = h("input", { type: "datetime-local", required: true });
   return h("div", { class: "card" }, h("h2", {}, "Seal a new paper"),
     h("form", { class: "inline", onsubmit: async (ev) => {
@@ -315,7 +316,7 @@ async function renderSystem() {
   const s = await api("/system/health");
   const row = (k, v) => h("tr", {}, h("th", {}, k), h("td", {}, v));
   show(h("h1", {}, "System health"),
-    h("div", { class: "table-wrap" }, h("table", {}, h("tbody", {},
+    h("div", { class: "table-wrap" }, h("table", { class: "kvtable" }, h("tbody", {},
       row("API", badge(s.api)), row("Storage", s.storage),
       row("Blockchain", [s.chain.mode, " ", s.chain.reachable ? badge("valid") : badge("ERROR"), s.chain.reachable ? ` · events anchored to #${s.chain.anchored_events_up_to_seq}` : ` ${s.chain.reason_code || ""}`]),
       row("Release needs custodian approval", s.release_requires_chain ? "yes" : "NO (demo)"),

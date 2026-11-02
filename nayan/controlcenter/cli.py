@@ -93,6 +93,14 @@ def cmd_serve(a):
     ks, service = make_service(passphrase, DATA_DIR / "keys", DATA_DIR / "local_storage")
     if not _users().list_public():
         sys.exit("No user accounts yet. Run:  python -m controlcenter demo-users   (or create-user)")
+    model_dir = bootstrap.ANSH / "models"
+    if not a.no_watcher and not (model_dir / "model.joblib").exists():
+        print("No trained AI model yet - training on synthetic data (one-time, a few seconds)...")
+        from threatdetect.features import extract
+        from threatdetect.model import ThreatModel
+        from threatdetect.synthetic import generate
+        ev, y, _ = generate(days=60, seed=1)
+        ThreatModel.train(extract(ev), y, notes="auto-trained by controlcenter serve").save(model_dir)
     flagger = None
     if a.flag_on_chain:
         from threatdetect.chainflag import GatewayFlagger, load_or_create_salt
