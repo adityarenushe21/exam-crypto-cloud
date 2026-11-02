@@ -11,7 +11,10 @@ service and the ML-KEM decapsulation key to the release service, on separate
 protected stores.
 """
 
+import hashlib
+import json
 import os
+import secrets
 from pathlib import Path
 
 from cryptography.hazmat.primitives import serialization as ser
@@ -28,7 +31,16 @@ AUTHORITY_PRIV = "authority_mldsa65_private.pem"
 AUTHORITY_PUB = "authority_mldsa65_public.pem"
 AUDIT_PRIV = "audit_mldsa65_private.pem"
 AUDIT_PUB = "audit_mldsa65_public.pem"
-ALL_FILES = (RELEASE_PRIV, RELEASE_PUB, AUTHORITY_PRIV, AUTHORITY_PUB)
+KDF_FILE = "key_protection.json"
+ALL_FILES = (RELEASE_PRIV, RELEASE_PUB, AUTHORITY_PRIV, AUTHORITY_PUB, KDF_FILE)
+
+# The PKCS#8 encryption in the crypto library uses PBKDF2-HMAC-SHA256 with only 2048
+# iterations (checked with `openssl asn1parse`) and cannot be raised for PKCS#8. So the
+# passphrase is first STRETCHED with scrypt (memory-hard, about 32 MB, tens of ms), and the
+# result is used as the PKCS#8 password. The salt and parameters are stored (not secret) in
+# key_protection.json. Folders created before this change have no such file and still load
+# with the raw passphrase (legacy mode).
+SCRYPT_N, SCRYPT_R, SCRYPT_P = 2 ** 15, 8, 1
 
 MIN_PASSPHRASE = 12
 
@@ -36,6 +48,7 @@ MIN_PASSPHRASE = 12
 class KeyStore:
     def __init__(self, folder: str | Path):
         self.folder = Path(folder)
+        self._stretched = {}        # sha256(passphrase) -> stretched password, this process only
 
     # ---------------------------------------------------------------- create
     def init_keys(self, passphrase: bytes) -> dict:
@@ -46,7 +59,9 @@ class KeyStore:
             raise ExamCryptoError(KEY_ALREADY_EXISTS,
                                   f"refusing to overwrite existing keys: {existing}")
         self.folder.mkdir(parents=True, exist_ok=True)
-        enc = ser.BestAvailableEncryption(passphrase)
+        self._write(KDF_FILE, json.dumps({"kdf": "scrypt", "n": SCRYPT_N, "r": SCRYPT_R, "p": SCRYPT_P,
+                                          "salt_hex": secrets.token_hex(16)}, indent=2).encode())
+        enc = ser.BestAvailableEncryption(self._file_password(passphrase))
 
         kem = MLKEM768PrivateKey.generate()
         dsa = MLDSA65PrivateKey.generate()
@@ -101,7 +116,7 @@ class KeyStore:
 
     def _load_private(self, name: str, passphrase: bytes):
         try:
-            return ser.load_pem_private_key(self._read(name), password=passphrase)
+            return ser.load_pem_private_key(self._read(name), password=self._file_password(passphrase))
         except (ValueError, TypeError) as exc:
             raise ExamCryptoError(KEY_PASSPHRASE_INVALID,
                                   f"could not unlock {name} (wrong passphrase?)") from exc
@@ -114,7 +129,7 @@ class KeyStore:
             if not create_if_missing:
                 raise ExamCryptoError(KEY_MISSING, f"{AUDIT_PRIV} not found")
             key = MLDSA65PrivateKey.generate()
-            enc = ser.BestAvailableEncryption(passphrase)
+            enc = ser.BestAvailableEncryption(self._file_password(passphrase))
             self._write(AUDIT_PRIV, key.private_bytes(ser.Encoding.PEM, ser.PrivateFormat.PKCS8, enc))
             self._write(AUDIT_PUB, key.public_key().public_bytes(
                 ser.Encoding.PEM, ser.PublicFormat.SubjectPublicKeyInfo))
@@ -128,6 +143,26 @@ class KeyStore:
         if not isinstance(key, MLDSA65PublicKey):
             raise ExamCryptoError(KEY_MISSING, "audit public key is not ML-DSA-65")
         return key
+
+    # -------------------------------------------------------- passphrase stretching
+    def _file_password(self, passphrase: bytes) -> bytes:
+        cfg_path = self.folder / KDF_FILE
+        if not cfg_path.exists():
+            return passphrase                               # legacy key folder
+        memo = hashlib.sha256(passphrase).hexdigest()
+        if memo in self._stretched:
+            return self._stretched[memo]
+        cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
+        if cfg.get("kdf") != "scrypt":
+            raise ExamCryptoError(KEY_MISSING, "unsupported key_protection.json")
+        key = hashlib.scrypt(passphrase, salt=bytes.fromhex(cfg["salt_hex"]), n=int(cfg["n"]),
+                             r=int(cfg["r"]), p=int(cfg["p"]), dklen=32, maxmem=128 * 1024 * 1024)
+        self._stretched[memo] = key.hex().encode("ascii")
+        return self._stretched[memo]
+
+    @property
+    def protection(self) -> str:
+        return "scrypt-stretched" if (self.folder / KDF_FILE).exists() else "legacy (PBKDF2 2048 only)"
 
     def key_ids(self) -> dict:
         return {

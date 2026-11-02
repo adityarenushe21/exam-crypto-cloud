@@ -21,7 +21,7 @@ To get updates later: `git pull`.
 python run_all_tests.py
 ```
 
-**Expected:** `PASS` for aditya (105), ansh (27) and nayan (32).
+**Expected:** `PASS` for aditya (107), ansh (27) and nayan (32).
 
 To include Harsh's suites, install Node.js LTS first, then:
 

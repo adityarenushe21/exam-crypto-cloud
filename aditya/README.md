@@ -21,7 +21,7 @@ private AWS S3 storage (Milestone 6). **Student prototype — not a security-aud
 | 7 Team integration | DONE: release needs 3-of-5 custodians on Harsh's ExamVault; confirmed on Aditya's PC with a real local Hardhat chain |
 | 8 Demo/report | dashboard demo ready (`nayan/`); report and PPT update not started |
 
-**Tests:** 105. The version before the login hooks passed on Aditya's PC (Windows 11, Python 3.14.7); the current version passes in a fresh clone in Claude's sandbox and has not yet been re-run on the PC.
+**Tests:** 107. The version before the login hooks passed on Aditya's PC (Windows 11, Python 3.14.7); the current version passes in a fresh clone in Claude's sandbox and has not yet been re-run on the PC.
 
 ## Setup (Windows PowerShell)
 One venv for the whole repo; see the root `HOW_TO_RUN_EVERYTHING.md`. From the repo folder:
@@ -37,6 +37,7 @@ python scripts\run_demo.py          # one-command story for the guide
 ## Command-line demo
 ```powershell
 python -m examcrypto init-keys                       # once; asks for a passphrase
+python scripts\benchmark.py --quick                # optional: timings on this PC
 python -m examcrypto make-sample                     # fake PDF -> output\sample_paper.pdf
 python -m examcrypto seal output\sample_paper.pdf --exam-id CS301-ENDSEM --release-at 2026-12-01T09:00:00Z
 python -m examcrypto verify <paper_id>
@@ -75,7 +76,7 @@ examcrypto/        the module
   blockchain.py    GatewayBlockchain (Harsh's real contracts) + MockBlockchain
   storage.py       LocalStorage + S3Storage (write-once, SSE)
   cli.py           command-line demo
-tests/             105 unittest tests (pipeline, insider attacks, CLI, API, chain rules, audit chain, S3, gateway)
+tests/             107 unittest tests (pipeline, insider attacks, CLI, API, chain rules, audit chain, S3, gateway)
 docs/              API_CONTRACT.md (team contract), AWS_S3_SETUP.md
 scripts/           environment check + Milestone 2 demos
 references/        teammate handoff files (unchanged until interfaces are agreed)
@@ -104,6 +105,10 @@ ML-KEM private key → decapsulate → HKDF → AES-GCM decrypt.
 
 ## Known limitations (prototype)
 - Both key pairs in one local folder with one passphrase (real system: separate services/HSM).
+- Key files: the passphrase is stretched with scrypt (N=2^15, r=8, p=1, salt in `keys/key_protection.json`)
+  before it encrypts the PKCS#8 PEMs, because the library's PKCS#8 encryption alone uses only 2048
+  PBKDF2 iterations. Key folders made before this change still load ("legacy"); run `init-keys` again
+  in a fresh folder to get scrypt protection.
 - Release time uses the PC clock; a trusted time source is future work.
 - `--simulate-now` exists only for demos and requires `EXAM_DEMO_MODE=1`.
 - Authorization is a mock (dev bearer tokens); Flask dev server is for local use only.

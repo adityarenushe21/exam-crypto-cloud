@@ -590,3 +590,17 @@ Tests actually run (Claude sandbox, Python 3.13, Flask 3.1.3, Node 22, Chromium 
 NOT run: Gateway.test.js risk-flag test on a real Hardhat chain (8th gateway test; expected
   total "27 passing"); anything new on Aditya's PC; real AWS S3.
 Next: Aditya pulls the branch and runs Part A/B of HOW_TO_RUN_EVERYTHING.md; then merge.
+
+----------------------------------------------------------------------
+[2026-11-02 evening Asia/Kolkata] — Key-file hardening + benchmark + architecture README + report (Claude sandbox)
+Found by benchmarking: cryptography's PKCS#8 BestAvailableEncryption = PBES2/PBKDF2-HMAC-SHA256 with
+  only 2048 iterations (not configurable). Fix: passphrase -> scrypt (N=2^15, r=8, p=1, 16-byte salt in
+  keys/key_protection.json) -> used as the PEM password. Per-process cache so repeat unlocks are fast.
+  Old key folders still load (legacy mode). 2 new tests -> aditya 107 OK.
+New: aditya/scripts/benchmark.py (median of N runs, prints environment; --quick).
+Sandbox numbers (Linux container, Python 3.13): ML-KEM encaps 0.03 ms, ML-DSA sign 1.1 ms,
+  cold key unlock 118 ms (scrypt), seal 1 MB 7.0 ms, release 1 MB 6.2 ms, seal 20 MB 100 ms.
+  NOT measured on Aditya's PC yet.
+All suites (sandbox): aditya 107, ansh 27, nayan 32, harsh crypto 7, gateway unit 11 - PASS.
+Docs: README.md expanded with architecture (components, sequences, data formats, trust
+  boundaries, threat model); docs/REPORT.md = full capstone project report.
