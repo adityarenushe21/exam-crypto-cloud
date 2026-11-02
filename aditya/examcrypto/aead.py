@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """AES-256-GCM. Output format: ciphertext || 16-byte tag (library default)."""
 
 import os

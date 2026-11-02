@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 // Integration: chain gateway core + the REAL ExamVault / AuditAnchor contracts (Hardhat network).
 // Runs together with the existing tests:  npx hardhat test
 const { expect } = require("chai");

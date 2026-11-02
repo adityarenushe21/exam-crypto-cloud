@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 r"""Repeatable performance benchmark for the examcrypto pipeline.
 
     python scripts\benchmark.py            # from the aditya folder, venv active

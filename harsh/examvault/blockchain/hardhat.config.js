@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 require("@nomicfoundation/hardhat-ethers");
 require("@nomicfoundation/hardhat-chai-matchers");
 require("@nomicfoundation/hardhat-network-helpers");

@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 r"""Tests for the integration adapters: signed audit chain, S3Storage, GatewayBlockchain.
 
 No AWS account and no blockchain are needed: S3 is replaced by an in-memory fake

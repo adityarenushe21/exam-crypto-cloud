@@ -1,5 +1,8 @@
 # ExamVault – Blockchain-Based Secure Examination Paper Distribution and Audit System
 
+> **ExamVault capstone project · Harsh Kapile** · B.Tech CSE, MIT World Peace University, Pune · Guide: Shital Kakad
+> Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal) · [MIT License](../../LICENSE)
+
 Day 1 status: **secure core** (smart contracts + ChronoSeal crypto library), fully tested.
 
 ## Layout

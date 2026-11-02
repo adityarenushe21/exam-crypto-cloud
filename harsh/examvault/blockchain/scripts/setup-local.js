@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 // One-step local setup for the integrated demo (does not modify deploy.js):
 //   deploys OrgRegistry + ExamVault + AuditAnchor, registers one organisation, grants roles,
 //   and writes deployments/<network>.json including a "gateway" section for gateway/server.js.

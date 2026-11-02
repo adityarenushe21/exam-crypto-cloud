@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 r"""
 Milestone 2 - Demo 4: SHA3-256 (digest / fingerprint), on its own.
 

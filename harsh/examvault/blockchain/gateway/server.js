@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 // Chain gateway for examcrypto (Aditya's Python service).
 //   Terminal A:  npx hardhat node
 //   Terminal B:  npx hardhat run scripts/setup-local.js --network localhost   (once per chain start)

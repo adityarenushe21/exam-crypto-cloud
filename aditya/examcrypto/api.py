@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """HTTP API (Flask) for teammates. Base path /api/v1. Format v1 - PROPOSED.
 
 Auth (MOCK, replaced by Nayan's real auth later):

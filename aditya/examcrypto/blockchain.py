@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """Blockchain adapters for Harsh's ExamVault + AuditAnchor contracts.
 
 Two implementations with the SAME methods:

@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 // Custodians approve release of a paper sealed through examcrypto.
 // PowerShell:
 //   $env:PAPER_ID="pap_..."; $env:PAPER_VERSION="1"; $env:COUNT="3"

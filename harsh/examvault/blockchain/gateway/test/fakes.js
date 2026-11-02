@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 "use strict";
 // In-memory stand-ins for ExamVault / AuditAnchor (subset), shaped like ethers v6 contract
 // objects: async methods, bigint fields, reverts carry err.revert.name. Used ONLY by

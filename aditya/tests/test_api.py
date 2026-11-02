@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 r"""Milestone 5 - HTTP API, events and blockchain mock tests (Flask test client).
 
 Run from the project root:

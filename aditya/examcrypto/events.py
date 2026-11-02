@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """Audit/security events (for Ansh's AI module, Nayan's dashboard and Harsh's AuditAnchor).
 
 * Built from a WHITELIST of fields, so plaintext, keys, passphrases, tokens and

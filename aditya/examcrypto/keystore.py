@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """Local key storage for DEVELOPMENT ONLY.
 
 - Private keys: PKCS#8 PEM, encrypted with a passphrase (BestAvailableEncryption).

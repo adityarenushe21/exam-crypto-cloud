@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """PaperService = pipeline + signed audit events + blockchain adapter.
 
 The API (and CLI server) talk only to this class. Every call emits exactly one

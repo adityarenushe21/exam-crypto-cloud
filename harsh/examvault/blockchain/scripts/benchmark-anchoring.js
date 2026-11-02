@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 // Compares per-event anchoring against Merkle-batched anchoring (gas, tx count, proof size).
 // Run: npx hardhat run scripts/benchmark-anchoring.js
 const { ethers } = require("hardhat");

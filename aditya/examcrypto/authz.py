@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """MOCK authorization. Nayan's real auth/RBAC replaces this later.
 
 Actor = {"actor_id": "...", "role": "..."}. Role names are PROPOSED.

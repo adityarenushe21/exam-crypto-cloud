@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 r"""Milestone 4 - extra attack and failure tests.
 
 These simulate an INSIDER who can re-sign manifests with the real authority key

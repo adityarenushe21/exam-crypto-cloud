@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 // Deploys OrgRegistry, ExamVault, AuditAnchor and writes addresses to deployments/<network>.json
 const fs = require("fs");
 const path = require("path");

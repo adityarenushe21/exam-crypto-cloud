@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """HKDF-SHA-256: ML-KEM shared secret -> 32-byte AES-256 key, bound to one paper version."""
 
 from cryptography.hazmat.primitives import hashes

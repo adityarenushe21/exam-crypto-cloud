@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """examcrypto - Aditya Renushe's crypto + storage module (student prototype).
 
 Option A (proposed, awaiting supervisor/team approval):

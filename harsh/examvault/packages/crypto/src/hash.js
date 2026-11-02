@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 "use strict";
 const { sha256: _sha256 } = require("@noble/hashes/sha256");
 const { keccak_256 } = require("@noble/hashes/sha3");

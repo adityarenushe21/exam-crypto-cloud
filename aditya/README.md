@@ -1,5 +1,8 @@
 # examcrypto: secure upload, encryption, storage and release (Aditya's module)
 
+> **ExamVault capstone project · Aditya Renushe** · B.Tech CSE, MIT World Peace University, Pune · Guide: Shital Kakad
+> Module: secure upload, post-quantum encryption and cloud storage · [MIT License](../LICENSE)
+
 Part of the ExamVault monorepo; see the [root README](../README.md).
 
 Aditya Renushe, Secure Upload, Encryption & Cloud Storage module

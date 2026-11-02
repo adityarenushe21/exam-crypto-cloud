@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """SHA3-256 (FIPS 202). NOT the same as SHA-256 and NOT Ethereum keccak256."""
 
 import hmac

@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """Storage adapters: LocalStorage (development) and S3Storage (private AWS bucket).
 
 Object layout (same keys will be used in S3):

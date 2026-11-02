@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """Exact byte/text encodings used by format v1.
 
 - Base64: standard alphabet WITH padding (RFC 4648 section 4).

@@ -1,3 +1,6 @@
+// ExamVault capstone project | Harsh Kapile | MIT World Peace University, Pune
+// Module: blockchain integrity (smart contracts, chain gateway, ChronoSeal)
+// SPDX-License-Identifier: MIT
 // Emergency freeze by custodians (2-of-5): custodian 1 proposes, custodian 2 votes.
 //   $env:PAPER_ID="pap_..."; npx hardhat run scripts/custodian-freeze.js --network localhost
 const fs = require("fs");

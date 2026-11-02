@@ -1,3 +1,6 @@
+# ExamVault capstone project | Aditya Renushe | MIT World Peace University, Pune
+# Module: secure upload, post-quantum encryption and cloud storage
+# SPDX-License-Identifier: MIT
 """ML-KEM-768 wrappers (library: pyca/cryptography). No crypto maths here."""
 
 from cryptography.hazmat.primitives.asymmetric.mlkem import (
